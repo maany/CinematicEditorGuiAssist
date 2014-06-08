@@ -6,6 +6,7 @@ package com.jme3.gde.cinematic.gui;
 
 import com.jme3.gde.cinematic.core.Layer;
 import com.jme3.gde.cinematic.CinematicEditorManager;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,9 @@ public class GuiManager {
     public static final int CHILD_Z_VALUE = 8;
     public static final int GRAND_CHILD_Z_VALUE = 6;
     public static final int GREAT_GRAND_CHILD_Z_VALUE = 4;
+    public static final LayerLAF DEFAULT_LAYER_LAF = new LayerLAF(Color.GRAY,true);
     private static GuiManager instance = null;
+    
     private GuiManager(){}
     public static GuiManager getInstance()
     {
@@ -36,7 +39,7 @@ public class GuiManager {
      * ruturns the JPanel i.e layerSpace to be displayed in the TimelineCanvas 
      * @return 
      */
-    public JPanel getLayerSpace(Layer layer)
+    public JPanel buildLayerSpace(Layer layer)
     {
         JPanel layerSpace = new JPanel();
         // set BoxLayout Horizontal.. or see other layout options
@@ -44,17 +47,28 @@ public class GuiManager {
         size.setSize(FRAME_WIDTH*CinematicEditorManager.getInstance().getCurrentClip().getDuration(), LAYER_HEIGTH);
         layerSpace.setPreferredSize(size);
         layerSpace.setMaximumSize(size);
+        layerSpace.setBackground(layer.getLaf().getColor());
         System.out.println("Returning Layer Space : " + layer.getName());
         return layerSpace;
     }
+    @Deprecated 
     public List<JPanel> getChildrenLayerSpace(Layer layer)
     {
         List<JPanel> childrenLayerSpace = new ArrayList<>();
         for(Layer child:layer.getChildren())
         {
             System.out.println("Child found : " + child.getName());
-            childrenLayerSpace.add(getLayerSpace(child));
+            childrenLayerSpace.add(buildLayerSpace(child));
         }
         return childrenLayerSpace;
+    }
+    public List<JPanel> getVisibleLayerSpaces()
+    {
+        List<JPanel> visibleLayerSpaces = new ArrayList<>();
+        Layer root = CinematicEditorManager.getInstance().getCurrentClip().getRoot();
+        List<Layer> allVisibleDescendants = root.findAllVisibleDescendants();
+        for(Layer layer:allVisibleDescendants)
+            visibleLayerSpaces.add(buildLayerSpace(layer));
+        return visibleLayerSpaces;
     }
 }

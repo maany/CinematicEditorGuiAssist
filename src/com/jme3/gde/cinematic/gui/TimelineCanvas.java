@@ -8,6 +8,7 @@ import com.jme3.gde.cinematic.core.Layer;
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.CinematicClip;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -46,12 +47,42 @@ public class TimelineCanvas extends JPanel implements Scrollable{
             add(layer);
     }
     /**
+     * Re-renders the TimelineCanvas with the latest layerSpaces
+     */
+    public void refreshCanvas() {
+        List<JPanel> visibleLayerSpaces = GuiManager.getInstance().getVisibleLayerSpaces();
+        removeAll();
+        setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+        for(JPanel layerSpace:visibleLayerSpaces)
+            add(layerSpace);
+     }
+    /**
+     * First compares what new JPanel's/ layerSpaces are to be added to the canvas. Then adds them at their appropriate positions.
+     */
+    public void compareAndRefresh() {
+        List<JPanel> updatedLayerSpaces = GuiManager.getInstance().getVisibleLayerSpaces();
+        List<JPanel> oldLayerSpaces = new ArrayList<>();
+        for(int i=0;i<getComponentCount();i++)
+        {
+            JPanel oldLayerSpace = (JPanel)getComponent(i);
+            oldLayerSpaces.add(oldLayerSpace);
+            if(!updatedLayerSpaces.contains(oldLayerSpace))
+                remove(oldLayerSpace);
+        }
+        for(JPanel temp:updatedLayerSpaces)
+            if(!oldLayerSpaces.contains(temp))
+            {
+                int parentPosition = getComponentPosition((JPanel) temp.getParent());
+                add(temp,parentPosition+1);
+            }
+     }
+    /**
      * adds the layer and all the children into a list form.
      * Lazy Loading of all the data
      * @param layer 
      */
     public void populateWithChildren(Layer layer) {
-        entireLayerSpace = layer.findAllDescendants(layer);
+        entireLayerSpace = layer.findAllDescendants();
     }
     
     
@@ -129,6 +160,17 @@ public class TimelineCanvas extends JPanel implements Scrollable{
         frame.pack();
         frame.setVisible(true);
         
+    }
+/**
+ * Gets the position of the JPanel in the TimelineCanvas as an integer. Returns -1 if component is not present in the canvas
+ * @param panel
+ * @return 
+ */
+    private int getComponentPosition(JPanel panel) {
+        for(int i=0;i<getComponentCount();i++)
+            if((JPanel)getComponent(i)== panel)
+                return i;
+        return -1;
     }
 
     

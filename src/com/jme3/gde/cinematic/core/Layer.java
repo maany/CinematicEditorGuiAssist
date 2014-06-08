@@ -4,6 +4,9 @@
  */
 package com.jme3.gde.cinematic.core;
 
+import com.jme3.gde.cinematic.gui.GuiManager;
+import com.jme3.gde.cinematic.gui.LayerLAF;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,25 +21,40 @@ public class Layer {
     private List<Layer> children;
     private Layer parent; // for child to parent link
     private List<Layer> descendants;
+    private LayerLAF laf; // look and feel
+    private List<Integer> index;
+    
+  
     /**
      * Use for creating a Child
      * @param name
      * @param parent 
      */
+   
+    
     public Layer(String name,Layer parent) {
         this.name = name;
         this.parent = parent;
         children = new ArrayList<>();
         descendants = new ArrayList<>();
+        laf = GuiManager.DEFAULT_LAYER_LAF;
+        
         if(parent!=null)
         {
             depth = parent.getDepth()+1;
             parent.addChild(this);
         }
         else
+        {
             depth=0;
+            
+        }
     }
 
+    public Layer(String name,Layer parent,Color color,boolean collapsed) {
+        this(name,parent);
+        laf = new LayerLAF(color,collapsed);
+    }
     /**
      * Avoid direct usage. Used by constructor to establish parent to child link.
      * @param child 
@@ -53,19 +71,43 @@ public class Layer {
         else
             return false;
     }
-    public List<Layer> findAllDescendants (Layer layer) {
-        if(layer.hasChildren())
-            for(Layer child:layer.getChildren())
+    /**
+     * layer.findAllDescendents(Layer) seems not right, but it is needed as this is recursive function.
+     * @param layer
+     * @return 
+     */
+    public List<Layer> findAllDescendants () {
+        if(this.hasChildren())
+            for(Layer child:this.getChildren())
             {
-                if(!descendants.contains(layer))
-                    descendants.add(layer);
-                findAllDescendants(child);
+                if(!descendants.contains(this))
+                    descendants.add(this);
+                child.findAllDescendants();
             }
         else
-            descendants.add(layer);
+            descendants.add(this);
         return getDescendants();
     }
-            
+      
+    public List<Layer> findAllVisibleDescendants () {
+        if(this.hasChildren())
+            for(Layer child:this.getChildren())
+            {
+                if(this.getLaf().isCollapsed()) {
+                    if(!descendants.contains(this) )
+                    descendants.add(this);
+                    
+                }
+                else {
+                    if(!descendants.contains(this) )
+                    descendants.add(this);
+                    child.findAllDescendants();
+                }
+            }
+        else
+            descendants.add(this);
+        return getDescendants();
+    }
     /*
      * Getters and Setters
      */
@@ -107,5 +149,14 @@ public class Layer {
     public void setDescendants(List<Layer> descendants) {
         this.descendants = descendants;
     }
-    
+
+    public LayerLAF getLaf() {
+        return laf;
+    }
+
+    public void setLaf(LayerLAF laf) {
+        this.laf = laf;
+    }
+
+   
 }
