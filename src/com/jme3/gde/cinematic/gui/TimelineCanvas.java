@@ -4,6 +4,7 @@
  */
 package com.jme3.gde.cinematic.gui;
 
+import com.jme3.gde.cinematic.core.Layer;
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.CinematicClip;
 import java.awt.Color;
@@ -112,6 +113,7 @@ public class TimelineCanvas extends JPanel implements Scrollable{
     public boolean getScrollableTracksViewportHeight() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
     public static void main(String args[])
     {
         JFrame frame = new JFrame();

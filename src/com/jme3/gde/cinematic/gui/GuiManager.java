@@ -4,6 +4,7 @@
  */
 package com.jme3.gde.cinematic.gui;
 
+import com.jme3.gde.cinematic.core.Layer;
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class GuiManager {
         size.setSize(FRAME_WIDTH*CinematicEditorManager.getInstance().getCurrentClip().getDuration(), LAYER_HEIGTH);
         layerSpace.setPreferredSize(size);
         layerSpace.setMaximumSize(size);
+        System.out.println("Returning Layer Space : " + layer.getName());
         return layerSpace;
     }
     public List<JPanel> getChildrenLayerSpace(Layer layer)
@@ -50,8 +52,9 @@ public class GuiManager {
         List<JPanel> childrenLayerSpace = new ArrayList<>();
         for(Layer child:layer.getChildren())
         {
-            childrenLayerSpace.add(getLayerSpace(layer));
+            System.out.println("Child found : " + child.getName());
+            childrenLayerSpace.add(getLayerSpace(child));
         }
-        return null;
+        return childrenLayerSpace;
     }
 }
