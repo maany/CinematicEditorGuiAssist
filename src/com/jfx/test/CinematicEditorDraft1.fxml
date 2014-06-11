@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane  id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jfx.test.CinematicEditorDraft1Controller" >
+  <children>
+    <TitledPane animated="false" collapsible="false" layoutX="38.0" layoutY="37.0" text="untitled">
+      <content>
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+          <children>
+            <ScrollPane hbarPolicy="NEVER" layoutX="0.0" layoutY="-10.0" prefHeight="190.0" prefWidth="200.0">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="241.0" prefWidth="200.0" />
+              </content>
+            </ScrollPane>
+          </children>
+        </AnchorPane>
+      </content>
+    </TitledPane>
+    <ScrollPane fitToHeight="false" hbarPolicy="ALWAYS" layoutX="242.0" layoutY="38.0" prefHeight="206.0" prefWidth="335.0" vbarPolicy="ALWAYS">
+      <content>
+        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="383.0">
+          <children>
+            <TitledPane animated="true" collapsible="true" expanded="false" layoutX="0.0" layoutY="0.0" prefWidth="383.0" text="1....5....10" wrapText="false">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </TitledPane>
+          </children>
+        </AnchorPane>
+      </content>
+    </ScrollPane>
+    <HBox layoutX="102.0" layoutY="277.0" prefHeight="32.0" prefWidth="383.0">
+      <children>
+        <ToggleButton mnemonicParsing="false" text="ToggleButton" />
+      </children>
+    </HBox>
+  </children>
+</AnchorPane>
