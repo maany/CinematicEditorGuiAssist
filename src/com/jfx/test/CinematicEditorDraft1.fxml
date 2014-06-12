@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jfx.test.CinematicEditorDraft1Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jfx.test.CinematicEditorDraft1Controller">
   <children>
     <TitledPane animated="false" collapsible="false" layoutX="38.0" layoutY="37.0" text="untitled">
       <content>
@@ -44,5 +44,6 @@
       </content>
     </ScrollPane>
     <HBox layoutX="102.0" layoutY="277.0" prefHeight="32.0" prefWidth="383.0" />
+    <ScrollBar fx:id="vbar" layoutX="231.0" layoutY="309.0" orientation="VERTICAL" prefHeight="180.0" />
   </children>
 </AnchorPane>
