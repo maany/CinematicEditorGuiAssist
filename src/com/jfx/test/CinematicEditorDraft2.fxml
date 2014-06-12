@@ -23,7 +23,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <VBox fx:id="layerContainer" layoutX="286.0" layoutY="200.0" onScroll="#layerScroll" prefHeight="200.0" prefWidth="100.0">
+    <VBox fx:id="layerContainer" layoutX="286.0" layoutY="200.0" prefHeight="200.0" prefWidth="100.0">
       <children>
         <Button mnemonicParsing="false" text="Button" />
         <Accordion minWidth="100.0" prefHeight="179.0" prefWidth="100.0">

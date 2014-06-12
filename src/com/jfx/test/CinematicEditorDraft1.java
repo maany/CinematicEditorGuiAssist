@@ -19,7 +19,7 @@ public class CinematicEditorDraft1 extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         Parent parent = FXMLLoader.load(getClass().getResource("CinematicEditorDraft1.fxml"));
-        Scene scene = new Scene(parent,600,200);
+        Scene scene = new Scene(parent,600,600);
         stage.setScene(scene);
         stage.show();
         stage.setTitle("CinematicEditorDraft1");
