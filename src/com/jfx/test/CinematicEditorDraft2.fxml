@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jfx.test.CinematicEditorDraft2Controller">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jfx.test.CinematicEditorDraft2Controller">
   <children>
     <GridPane layoutX="30.0" layoutY="55.0" prefHeight="231.0" prefWidth="122.0">
       <children>
@@ -23,11 +23,28 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <VBox fx:id="layerContainer" layoutX="300.0" layoutY="118.0" prefHeight="200.0" prefWidth="100.0">
+    <VBox fx:id="layerContainer" layoutX="286.0" layoutY="200.0" onScroll="#layerScroll" prefHeight="200.0" prefWidth="100.0">
       <children>
         <Button mnemonicParsing="false" text="Button" />
+        <Accordion minWidth="100.0" prefHeight="179.0" prefWidth="100.0">
+          <expandedPane>
+            <TitledPane fx:id="x1" animated="false" text="untitled">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </TitledPane>
+          </expandedPane>
+          <panes>
+            <TitledPane animated="false" text="untitled">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </TitledPane>
+            <fx:reference source="x1" />
+          </panes>
+        </Accordion>
       </children>
     </VBox>
-    <ScrollBar fx:id="vbar" layoutX="400.0" layoutY="118.0" orientation="VERTICAL" prefHeight="140.0" />
+    <ScrollBar fx:id="vbar" layoutX="386.0" layoutY="200.0" orientation="VERTICAL" prefHeight="140.0" visibleAmount="10.0" />
   </children>
 </AnchorPane>
