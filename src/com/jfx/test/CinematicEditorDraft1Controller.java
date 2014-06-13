@@ -28,6 +28,10 @@ import javafx.event.EventType;
  * @author MAYANK
  */
 public class CinematicEditorDraft1Controller implements Initializable {
+    @FXML
+    TitledPane layerPaneSuperHolder;
+    @FXML
+    AnchorPane layerPaneHolder;
     @FXML 
     ScrollPane layerPane;
     @FXML
@@ -42,6 +46,8 @@ public class CinematicEditorDraft1Controller implements Initializable {
     AnchorPane layerAnchor;
     @FXML
     ScrollBar vbar;
+    
+    
 
     
     
@@ -52,8 +58,15 @@ public class CinematicEditorDraft1Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        assert timebar != null : "fx:id=\"myButton\" was not injected: check your FXML file 'simple.fxml'.";
+        if(layerPane!=null)
+            System.out.println("layerPane is not null");
+        //timelineAnchor.layoutYProperty().bindBidirectional(layerAnchor.layoutYProperty());
         System.out.println("Initialize script run 1 ");
+        System.out.println("position of layerPane" + timebar.getLayoutX() + " y: " +timebar.getLayoutY());
         Set<Node> nodes = layerPane.lookupAll(".scroll-bar");
+        System.out.println("No of elemetns : " + nodes.size());
+        
         for (final Node node : nodes) {
             System.out.println("node :" + node.getId() + " : " + node.toString());
             if (node instanceof ScrollBar) {
@@ -71,7 +84,9 @@ public class CinematicEditorDraft1Controller implements Initializable {
     public void btnClicked(ActionEvent evt){
         System.out.println("yoyoyoyo");
         ScrollBar vbar = null ;
+        ScrollBar vbarTimeline = null;
         Set<Node> nodes = layerPane.lookupAll(".scroll-bar");
+        System.out.println("size after button" + nodes.size());
         for (final Node node : nodes) {
             System.out.println("node :" + node.getId() + " : " + node.toString());
             if (node instanceof ScrollBar) {
@@ -84,8 +99,22 @@ public class CinematicEditorDraft1Controller implements Initializable {
                 }
             }
         }
-       
-           vbar.valueProperty().addListener(new ChangeListener<Number>() {
+       Set<Node> nodesTimeline = timeline.lookupAll(".scroll-bar");
+        for (final Node node : nodesTimeline) {
+            System.out.println("node :" + node.getId() + " : " + node.toString());
+            if (node instanceof ScrollBar) {
+                ScrollBar sb = (ScrollBar) node;
+                if (sb.getOrientation() == Orientation.VERTICAL) {
+                    System.out.println("vertical scrollbar visible = " + sb.isVisible());
+                    System.out.println("width = " + sb.getWidth());
+                    System.out.println("height = " + sb.getHeight());
+                    vbarTimeline = sb;
+                }
+            }
+        }
+        
+        vbarTimeline.valueProperty().bind(vbar.valueProperty());
+        /*vbar.valueProperty().addListener(new ChangeListener<Number>() {
         public void changed(ObservableValue<? extends Number> ov,
         Number old_val, Number new_val) {
             //timelineAnchor.setLayoutY(-new_val.doubleValue());
@@ -93,9 +122,9 @@ public class CinematicEditorDraft1Controller implements Initializable {
             layerAnchor.setTranslateY(layerAnchor.getTranslateY() - new_val.doubleValue());
             System.out.println("SCROLLING MAN");
         }
-    });
+    });*/
     }
-    @FXML
+    /*@FXML
     public void verticalScroll(ScrollEvent evt)
     {
         System.out.println("Scrolling this");
@@ -106,5 +135,5 @@ public class CinematicEditorDraft1Controller implements Initializable {
         System.out.println("New Pos: " + timelineAnchor.getTranslateY());
         System.out.println("");
         
-    }
+    }*/
 }

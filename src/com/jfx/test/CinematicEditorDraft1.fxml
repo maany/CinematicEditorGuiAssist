@@ -8,11 +8,11 @@
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.jfx.test.CinematicEditorDraft1Controller">
   <children>
-    <TitledPane animated="false" collapsible="false" layoutX="38.0" layoutY="37.0" text="untitled">
+    <TitledPane id="layerPaneHolder" fx:id="layerPaneSuperHolder" animated="false" collapsible="false" layoutX="38.0" layoutY="37.0" text="untitled">
       <content>
-        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+        <AnchorPane id="Content" fx:id="layerPaneHolder" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
           <children>
-            <ScrollPane id="" fx:id="layerPane" hbarPolicy="NEVER" layoutX="0.0" layoutY="-10.0" onScroll="#verticalScroll" prefHeight="190.0" prefWidth="200.0">
+            <ScrollPane id="" fx:id="layerPane" hbarPolicy="NEVER" layoutX="0.0" layoutY="-10.0" prefHeight="190.0" prefWidth="200.0">
               <content>
                 <AnchorPane id="Content" fx:id="layerAnchor" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="200.0">
                   <children>
@@ -27,12 +27,12 @@
         </AnchorPane>
       </content>
     </TitledPane>
-    <TitledPane id="timebar" animated="true" collapsible="true" expanded="false" layoutX="243.0" layoutY="17.0" prefWidth="335.0" text="1....5....10" wrapText="false">
+    <TitledPane fx:id="timebar" animated="true" collapsible="true" expanded="false" layoutX="243.0" layoutY="17.0" prefWidth="335.0" text="1....5....10" wrapText="false">
       <content>
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
       </content>
     </TitledPane>
-    <ScrollPane id="timelineView" fitToHeight="false" hbarPolicy="ALWAYS" layoutX="242.0" layoutY="38.0" prefHeight="206.0" prefWidth="335.0" vbarPolicy="ALWAYS">
+    <ScrollPane id="timelineView" fx:id="timeline" fitToHeight="false" hbarPolicy="ALWAYS" layoutX="242.0" layoutY="38.0" prefHeight="206.0" prefWidth="335.0" vbarPolicy="ALWAYS">
       <content>
         <AnchorPane id="Content" fx:id="timelineAnchor" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="383.0">
           <children>
