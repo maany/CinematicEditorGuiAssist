@@ -5,13 +5,17 @@
 package com.jme3.cinematic.gui.jfx;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.input.DragEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -29,9 +33,11 @@ public class TimelineUI extends VBox {
     private ScrollPane timelineScrollPane;
     @FXML
     private VBox timelineVBox;
+    @FXML
+    private Separator timeslider;   
     
-    DoubleProperty vPos = new SimpleDoubleProperty();
-    DoubleProperty hPos = new SimpleDoubleProperty();
+    DoubleProperty duration = new SimpleDoubleProperty();
+    DoubleProperty currentTime = new SimpleDoubleProperty();
     public TimelineUI() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("timeline_ui.fxml"));
         loader.setRoot(this);
@@ -42,6 +48,7 @@ public class TimelineUI extends VBox {
             throw new RuntimeException(ex);
         }
         initListeners();
+        
     }
 
     public void test() {
@@ -58,9 +65,32 @@ public class TimelineUI extends VBox {
                 double extraDistance = timebar.getPrefWidth() - timelineScrollPane.getPrefWidth();
                 double timebarHVal = -1 * t1.doubleValue() * extraDistance;
                 timebar.setLayoutX(timebarHVal);
+                timeslider.setLayoutX(timebarHVal);
+            }
+        });
+        
+        timebar.valueProperty().bindBidirectional(currentTime);
+        currentTime.addListener(new ChangeListener<Number>(){
+
+            @Override
+            public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+                double newPos = (timelineVBox.getWidth()/timebar.getMax())*t1.doubleValue();
+                timeslider.setLayoutX(newPos);
+                System.out.println("New Pos : " + newPos);
+            }
+        
+        });
+        
+        timebar.setOnDragOver(new EventHandler<DragEvent>(){
+
+            
+            public void handle(DragEvent t) {
+                System.out.println("DRAGGING");
             }
         });
     }
+    
+    
     /***************** DURATION ******************/
     public void setDuration(double duration)
     {
