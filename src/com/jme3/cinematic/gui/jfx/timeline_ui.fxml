@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox" >
+    <HBox layoutX="220.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="440.0">
+        <children>
+            <Slider fx:id="timebar" prefHeight="20.0" prefWidth="440.0" showTickLabels="true" showTickMarks="true" snapToTicks="false"  />
+        </children>
+    </HBox>
+    <StackPane fx:id="timelineStackPane" id="StackPane" layoutX="220.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="440.0">
+        <children>
+            <ScrollPane fx:id="timelineScrollPane" prefHeight="161.0" prefWidth="440.0">
+                <content>
+                    <VBox fx:id="timelineVBox" id="Content" minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="440.0" />
+                </content>
+            </ScrollPane>
+        </children>
+    </StackPane>
+</fx:root>

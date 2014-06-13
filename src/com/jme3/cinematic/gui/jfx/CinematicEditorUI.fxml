@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="205.0" prefWidth="660.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <HBox layoutX="220.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="440.0">
+      <children>
+        <Slider prefHeight="20.0" prefWidth="440.0" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+      </children>
+    </HBox>
+    <StackPane id="StackPane" layoutX="220.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="440.0">
+      <children>
+        <ScrollPane prefHeight="161.0" prefWidth="440.0">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="440.0" />
+          </content>
+        </ScrollPane>
+      </children>
+    </StackPane>
+    <TableView layoutX="0.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="220.0" tableMenuButtonVisible="true">
+      <columns>
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="19.0" text="Column X" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="124.0" text="Layer Name" />
+      </columns>
+    </TableView>
+  </children>
+</AnchorPane>
