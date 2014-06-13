@@ -29,7 +29,7 @@ public class TimelineUI extends VBox {
     private ScrollPane timelineScrollPane;
     @FXML
     private VBox timelineVBox;
-
+    
     DoubleProperty vPos = new SimpleDoubleProperty();
     DoubleProperty hPos = new SimpleDoubleProperty();
     public TimelineUI() {
@@ -41,6 +41,7 @@ public class TimelineUI extends VBox {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+        initListeners();
     }
 
     public void test() {
@@ -48,13 +49,16 @@ public class TimelineUI extends VBox {
     }
     /*********** Listeners ***************/
     public void initListeners() {
-        hPos.addListener(new ChangeListener<Number>(){
-
+        /**** bind timelineScrollPane horizontal scrollbar to change timebar's horizontal position 
+         **** so that the conttents of timelineVBox and timebar move together when scrollbar is used
+         ****/
+        timelineScrollPane.hvalueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
-                
+                double extraDistance = timebar.getPrefWidth() - timelineScrollPane.getPrefWidth();
+                double timebarHVal = -1 * t1.doubleValue() * extraDistance;
+                timebar.setLayoutX(timebarHVal);
             }
-        
         });
     }
     /***************** DURATION ******************/

@@ -3,23 +3,37 @@
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root xmlns:fx="http://javafx.com/fxml" type="javafx.scene.layout.VBox" >
-    <HBox layoutX="220.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="440.0">
-        <children>
-            <Slider fx:id="timebar" prefHeight="20.0" prefWidth="440.0" showTickLabels="true" showTickMarks="true" snapToTicks="false"  />
-        </children>
-    </HBox>
-    <StackPane fx:id="timelineStackPane" id="StackPane" layoutX="220.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="440.0">
-        <children>
-            <ScrollPane fx:id="timelineScrollPane" prefHeight="161.0" prefWidth="440.0">
-                <content>
-                    <VBox fx:id="timelineVBox" id="Content" minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="440.0" />
-                </content>
-            </ScrollPane>
-        </children>
-    </StackPane>
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <AnchorPane id="timelineAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="440.0">
+    <children>
+      <Slider fx:id="timebar" layoutX="0.0" layoutY="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="550.0" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+    </children>
+  </AnchorPane>
+  <StackPane id="StackPane" fx:id="timelineStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="440.0">
+    <children>
+      <ScrollPane fx:id="timelineScrollPane" hmax="1.0" prefHeight="161.0" prefWidth="440.0" vmax="1.0">
+        <content>
+          <VBox id="Content" fx:id="timelineVBox" minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="550.0">
+            <children>
+              <Button mnemonicParsing="false" text="Button" />
+              <ChoiceBox>
+                <items>
+                  <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Item 1" />
+                    <String fx:value="Item 2" />
+                    <String fx:value="Item 3" />
+                  </FXCollections>
+                </items>
+              </ChoiceBox>
+            </children>
+          </VBox>
+        </content>
+      </ScrollPane>
+    </children>
+  </StackPane>
 </fx:root>
