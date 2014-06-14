@@ -12,9 +12,13 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 
 /**
  *
@@ -29,6 +33,8 @@ public class CinematicEditorDraft2Controller implements Initializable {
     DoubleProperty vPos;
 
     @FXML
+    AnchorPane anchor;
+    @FXML
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         vPos = new SimpleDoubleProperty();
@@ -36,7 +42,7 @@ public class CinematicEditorDraft2Controller implements Initializable {
         assert vbar != null : "fx:id=\"vbar\" was not injected: check your FXML file 'CinematicEditorDraft2.fxml'.";
         final double reference = layerContainer.getLayoutY();
         System.out.println("reference : " + reference + "scrollbarValue : " + vbar.getValue());
-
+        enableDrag(layerContainer);
 
         /*
          vbar.valueProperty().addListener(new ChangeListener<Number>() {
@@ -89,7 +95,7 @@ public class CinematicEditorDraft2Controller implements Initializable {
             }
         };
 
-         layerContainer.layoutYProperty().bind(layoutYToVPosBinding);
+         //layerContainer.layoutYProperty().bind(layoutYToVPosBinding);
         //vbar.valueProperty().bindBidirectional(vPos);
       
         
@@ -122,5 +128,51 @@ public class CinematicEditorDraft2Controller implements Initializable {
 
     } 
 
+    class Delta { double x, y; }
+// make a node movable by dragging it around with the mouse.
+private void enableDrag(final Node circle1) {
+final Delta dragDelta = new Delta();
+final Circle circle = new Circle();
+anchor.getChildren().add(circle);
+circle.setRadius(10);
+circle.setOnMousePressed(new EventHandler<MouseEvent>() {
+  @Override public void handle(MouseEvent mouseEvent) {
+    // record a delta distance for the drag and drop operation.
+    dragDelta.x = circle.getCenterX()- mouseEvent.getX();
+    dragDelta.y = circle.getCenterY() - mouseEvent.getY();
+    circle.getScene().setCursor(Cursor.MOVE);
+      System.out.println("Mouse Pressed");
+  }
+});
+circle.setOnMouseReleased(new EventHandler<MouseEvent>() {
+  @Override public void handle(MouseEvent mouseEvent) {
+    circle.getScene().setCursor(Cursor.HAND);
+      System.out.println("Mouse Released");
+  }
+});
+circle.setOnMouseDragged(new EventHandler<MouseEvent>() {
+  @Override public void handle(MouseEvent mouseEvent) {
+    circle.setCenterX(mouseEvent.getX() + dragDelta.x);
+    circle.setCenterY(mouseEvent.getY() + dragDelta.y);
+      System.out.println("Mouse Dragged");
+  }
+});
+circle.setOnMouseEntered(new EventHandler<MouseEvent>() {
+  @Override public void handle(MouseEvent mouseEvent) {
+    if (!mouseEvent.isPrimaryButtonDown()) {
+      circle.getScene().setCursor(Cursor.HAND);
+    }
+      System.out.println("Mouse ENtered");
+  }
+});
+circle.setOnMouseExited(new EventHandler<MouseEvent>() {
+  @Override public void handle(MouseEvent mouseEvent) {
+    if (!mouseEvent.isPrimaryButtonDown()) {
+      circle.getScene().setCursor(Cursor.DEFAULT);
+    }
+      System.out.println("Mouse Exited");
+  }
+});
+}
     
 }

@@ -4,6 +4,7 @@
  */
 package com.jme3.cinematic.gui.jfx;
 
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,16 +14,17 @@ import javafx.stage.Stage;
  * @author MAYANK
  */
 public class CinematicEditorUI extends Application{
-    TimelineUI timeline ;
-
+    TimelineControl timelineControl ;
+    Timeline timeline = new Timeline();
     @Override
     public void start(Stage stage) throws Exception {
-        timeline = new TimelineUI();
-        Scene scene = new Scene(timeline,440,205);
+        timelineControl = new TimelineControl();
+        Scene scene = new Scene(timelineControl,440,205);
         stage.setScene(scene);
         stage.show();
-        timeline.test();
-        timeline.getCurrentTime().setValue(10);
+        timelineControl.initListeners();
+        //timeline.test();
+        //timeline.getCurrentTime().setValue(10);
     }
     public static void main(String args[])
     {
