@@ -16,6 +16,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -55,7 +57,7 @@ public class TimelineUI extends VBox {
         System.out.println("Connected to TimelineUI");
     }
     /*********** Listeners ***************/
-    public void initListeners() {
+    public final void initListeners() {
         /**** bind timelineScrollPane horizontal scrollbar to change timebar's horizontal position 
          **** so that the conttents of timelineVBox and timebar move together when scrollbar is used
          ****/
@@ -64,30 +66,48 @@ public class TimelineUI extends VBox {
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
                 double extraDistance = timebar.getPrefWidth() - timelineScrollPane.getPrefWidth();
                 double timebarHVal = -1 * t1.doubleValue() * extraDistance;
+                double timesliderRefVal =  (timelineVBox.getWidth()/timebar.getMax())*currentTime.doubleValue();
+                double timesliderHVal = timebarHVal + timesliderRefVal;
                 timebar.setLayoutX(timebarHVal);
-                timeslider.setLayoutX(timebarHVal);
+                timeslider.setLayoutX(timesliderHVal);
             }
         });
         
+        /***** current time changes timebar's value *****/
         timebar.valueProperty().bindBidirectional(currentTime);
-        currentTime.addListener(new ChangeListener<Number>(){
-
+        
+        /**** currentTime changes timeslider's x position *****/
+        currentTime.addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
-                double newPos = (timelineVBox.getWidth()/timebar.getMax())*t1.doubleValue();
+                double newPos = (timelineVBox.getWidth() / timebar.getMax()) * t1.doubleValue();
                 timeslider.setLayoutX(newPos);
-                System.out.println("New Pos : " + newPos);
+                
             }
-        
         });
         
-        timebar.setOnDragOver(new EventHandler<DragEvent>(){
 
-            
-            public void handle(DragEvent t) {
-                System.out.println("DRAGGING");
+        timeslider.setOnDragDetected(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent t) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                //System.out.println("Deag Detected");
+                //timeslider.setLayoutX(t.getX());
             }
+        
         });
+        timeslider.setOnDragDetected(new EventHandler<MouseEvent>(){
+            double timesliderRefPos = timeslider.getLayoutX();
+            @Override
+            public void handle(MouseEvent t) {
+                System.out.println("Dragging");
+                currentTime.setValue(currentTime.getValue()+(t.getX()/timelineVBox.getWidth())*timebar.getMax() );
+                System.out.println("ref pos : " + timesliderRefPos + " moved : " + t.getX());
+            }
+        
+        });
+      
     }
     
     
@@ -100,4 +120,8 @@ public class TimelineUI extends VBox {
     {
         return timebar.getMax();
     }
+    public DoubleProperty getCurrentTime() {
+        return currentTime;
+    }
 }
+
