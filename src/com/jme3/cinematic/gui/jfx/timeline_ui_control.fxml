@@ -9,7 +9,7 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root type="javafx.scene.layout.VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="440.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<fx:root type="javafx.scene.layout.VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="209.00009999999747" prefWidth="440.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <StackPane id="StackPane">
     <children>
       <Group id="Group" StackPane.alignment="CENTER_LEFT">
@@ -31,7 +31,7 @@
         <children>
           <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" prefWidth="551.0859375">
             <children>
-              <Slider fx:id="timebar" layoutX="0.0" layoutY="0.0" majorTickUnit="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="4" prefHeight="38.80078125" prefWidth="550.0" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+              <Slider fx:id="timebar" blockIncrement="15.0" layoutX="0.0" layoutY="0.0" majorTickUnit="15.0" max="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="15" prefHeight="38.80078125" prefWidth="550.0" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
             </children>
           </AnchorPane>
           <Separator fx:id="timeslider" halignment="CENTER" layoutX="6.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="162.0" prefWidth="1.0">
@@ -43,4 +43,10 @@
       </Group>
     </children>
   </StackPane>
+  <ToolBar rotate="0.0">
+    <items>
+      <Button mnemonicParsing="false" rotate="0.0" text="Button" />
+      <Slider fx:id="zoom" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" prefWidth="68.0" rotate="0.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+    </items>
+  </ToolBar>
 </fx:root>
