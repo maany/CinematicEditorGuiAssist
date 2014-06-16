@@ -8,6 +8,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +17,11 @@ import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -36,8 +41,13 @@ public class TimelineControl extends VBox {
     @FXML
     private VBox timelineScrollPaneVBox;
     @FXML
-    
     private Slider zoom;
+    @FXML
+    private ToggleButton snapToggle;
+    @FXML
+    private AnchorPane anchor;
+    @FXML
+    private TextField durationInput;
     private DoubleProperty currentTime = new SimpleDoubleProperty(0);
     private DoubleProperty magnification = new SimpleDoubleProperty();
     private DoubleProperty maxMagnification = new SimpleDoubleProperty();
@@ -60,7 +70,12 @@ public class TimelineControl extends VBox {
         //initListeners();
     }
 
-    public final void initListeners() {
+    public void initTimeline() {
+        initView();
+        initListeners();
+        initActions();
+    }
+    private void initListeners() {
 
         
         timelineScrollPane.hvalueProperty().addListener(new ChangeListener<Number>() {
@@ -88,18 +103,23 @@ public class TimelineControl extends VBox {
                 boolean isTimesliderSync;
                 double expectedPosition = (timebar.getWidth() - endAdjustment - startAdjustment) * timebar.getValue() / timebar.getMax();
                 expectedPosition += startAdjustment;
-                isTimesliderSync = timeslider.getTranslateX() == expectedPosition;
-                System.out.println("Expected Position : " + expectedPosition);
+                isTimesliderSync = timeslider.getLayoutX() == expectedPosition;
+                System.out.println("Expected Position : " + expectedPosition + " timebar layout : " + timebar.getLayoutX()+ " timebar trans" + timebar.getTranslateX() + "Anchor pane " + anchor.getLayoutX() + " : " + anchor.getTranslateX());
                 if (!isTimesliderSync) {
                     timeslider.setLayoutX(expectedPosition);
                 }
+                if(expectedPosition==startAdjustment)
+                    timeslider.setLayoutX(0);
             }
         });
 
         enableTimesliderDrag();
         
-        initView();
+        
+        
+        
     }
+
 
     class Delta {
 
@@ -146,16 +166,19 @@ public class TimelineControl extends VBox {
         magnification.set(timebar.getPrefWidth()/timelineScrollPane.getPrefWidth());
         timelineScrollPaneVBox.setPrefWidth(timelineScrollPaneVBox.getPrefWidth()/magnification.doubleValue());
         timebar.setPrefWidth(timebar.getPrefWidth()/magnification.doubleValue());
+        timeslider.setTranslateX(timeslider.getTranslateX()/magnification.doubleValue());
         magnification.set(1);
         Integer majorTickUnit = new Integer((int) (zoom.getMax()));
                     System.out.println("Majot Tick Unit : " + majorTickUnit);
                 timebar.setMajorTickUnit(majorTickUnit);
+                timebar.setMinorTickCount(100/ majorTickUnit);
     }
-    public void initView() {
+    public final void initView() {
         resetView();
         maxMagnification.bindBidirectional(zoom.maxProperty());
         magnification.bindBidirectional(zoom.valueProperty());
         magnification.addListener(new ChangeListener<Number>() {
+        //TODO Zoom Issues . see notebook
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number mag) {
                 if (mag.doubleValue() > 0) {
@@ -163,12 +186,17 @@ public class TimelineControl extends VBox {
                     double currentWidth = mag.doubleValue() * timelineScrollPane.getWidth();
                     timelineScrollPaneVBox.setPrefWidth(currentWidth);
                     timebar.setPrefWidth(currentWidth);
+                    currentTime.setValue(timebar.getValue());
+                    
                     // change ticks
                     Integer majorTickUnit = new Integer((int) (zoom.getMax() + zoom.getMin() - mag.floatValue()));
-                    System.out.println("Majot Tick Unit : " + majorTickUnit + " Position : " + timebar.getLayoutX());
                     timebar.setMajorTickUnit(majorTickUnit);
+                    //double timesliderPos = currentWidth*timebar.getValue()/majorTickUnit;
+                    //timeslider.setTranslateX(timesliderPos);
+                    
                     int durationNearestSecond = (int) duration.doubleValue() - (((int) duration.doubleValue()) % ((int) zoom.getValue()));
-                    timebar.setMinorTickCount(100 / majorTickUnit);
+                    timebar.setMinorTickCount(100/ majorTickUnit);
+                   // System.out.println("Majot Tick Unit : " + majorTickUnit + " Minor Tick Count "+ timebar.getMinorTickCount() + "Position : " + anchor.getTranslateX());
                 }
             }
         });
@@ -176,6 +204,44 @@ public class TimelineControl extends VBox {
         
     }
 
+    private void initActions() {
+        timebar.snapToTicksProperty().set(false);
+        snapToggle.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent t) {
+                
+                if(!timebar.snapToTicksProperty().getValue())
+                {
+                    System.out.println("Snap On");
+                    timebar.snapToTicksProperty().set(true);
+                }
+                    else
+                {
+                    System.out.println("Snap Off");
+                    timebar.snapToTicksProperty().set(false);
+                }
+            }
+        });
+        
+        durationInput.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent t) {
+                try {
+                    
+                    duration.set(new Double(durationInput.getText()));
+                    System.out.println("duration : " + duration.getValue());
+                    timebar.setMax(duration.get());
+                    
+                } catch(Exception ex)
+                {
+                    System.out.println("invalid duration"  + duration.getValue());
+                    durationInput.setText(duration.getValue().toString());
+                }
+            }
+        });
+    }
     public DoubleProperty getDuration() {
         return duration;
     }

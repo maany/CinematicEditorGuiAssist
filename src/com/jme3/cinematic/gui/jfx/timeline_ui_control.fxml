@@ -19,7 +19,11 @@
             <content>
               <VBox id="Content" fx:id="timelineScrollPaneVBox" minHeight="0.0" minWidth="0.0" prefHeight="145.0" prefWidth="550.0">
                 <children>
-                  <Button mnemonicParsing="false" text="Button" />
+                  <HBox minHeight="20.0" prefHeight="22.0" prefWidth="584.0">
+                    <children>
+                      <Button mnemonicParsing="false" text="Button" HBox.hgrow="ALWAYS" />
+                    </children>
+                  </HBox>
                   <Button mnemonicParsing="false" text="Button" />
                 </children>
               </VBox>
@@ -29,7 +33,7 @@
       </Group>
       <Group id="Group" fx:id="timebarTimesliderGroup" scaleX="1.0" scaleY="1.0">
         <children>
-          <AnchorPane id="AnchorPane" layoutX="0.0" layoutY="0.0" prefWidth="551.0859375">
+          <AnchorPane id="AnchorPane" fx:id="anchor" layoutX="0.0" layoutY="0.0" prefWidth="551.0859375" scaleX="1.0">
             <children>
               <Slider fx:id="timebar" blockIncrement="15.0" layoutX="0.0" layoutY="0.0" majorTickUnit="15.0" max="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="15" prefHeight="38.80078125" prefWidth="550.0" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
             </children>
@@ -45,8 +49,9 @@
   </StackPane>
   <ToolBar rotate="0.0">
     <items>
-      <Button mnemonicParsing="false" rotate="0.0" text="Button" />
-      <Slider fx:id="zoom" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" prefWidth="68.0" rotate="0.0" showTickLabels="false" showTickMarks="true" snapToTicks="true" value="1.0" />
+      <ToggleButton fx:id="snapToggle" mnemonicParsing="false" text="SNAP" textAlignment="CENTER" />
+      <Slider fx:id="zoom" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefWidth="68.0" rotate="0.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="1.0" />
+      <TextField id="durationTextField" fx:id="durationInput" editable="true" prefWidth="56.0" />
     </items>
   </ToolBar>
 </fx:root>

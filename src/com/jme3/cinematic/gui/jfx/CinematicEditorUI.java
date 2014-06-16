@@ -22,7 +22,7 @@ public class CinematicEditorUI extends Application{
         Scene scene = new Scene(timelineControl,440,205);
         stage.setScene(scene);
         stage.show();
-        timelineControl.initListeners();
+        timelineControl.initTimeline();
         //timeline.test();
         //timeline.getCurrentTime().setValue(10);
     }
