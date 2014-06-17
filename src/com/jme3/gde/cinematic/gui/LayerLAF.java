@@ -12,8 +12,18 @@ import java.awt.Color;
  */
 public class LayerLAF {
     private Color color;
+    private boolean enabled = true;
     private boolean collapsed = true;
-
+    /**
+     * Used by LayerContainer's enabled column
+     */
+    public void disable(){
+     //override this method depending on layer type   
+        System.out.println("Disabling Layer");
+    }
+    public void enable(){
+        System.out.println("Enabling Layer");
+    }
     public LayerLAF(Color color,boolean collapsed)
     {
         this.color = color;
@@ -33,6 +43,18 @@ public class LayerLAF {
 
     public void setCollapsed(boolean collapsed) {
         this.collapsed = collapsed;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        if(enabled==false)
+            disable();
+        else
+            enable();
     }
     
 }

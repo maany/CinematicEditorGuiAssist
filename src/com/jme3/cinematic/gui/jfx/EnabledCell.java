@@ -20,12 +20,12 @@ public class EnabledCell extends TableCell<Layer, Boolean> {
     private CheckBox checkbox;
 
     public EnabledCell() {
-         checkbox = new CheckBox();
-            setAlignment(Pos.CENTER);
-            checkbox.setAlignment(Pos.CENTER);
-            /* true by default */
-            checkbox.setSelected(true); // bind
-            setGraphic(checkbox);
+        checkbox = new CheckBox();
+        setAlignment(Pos.CENTER);
+        checkbox.setAlignment(Pos.CENTER);
+        /* true by default */
+        checkbox.setSelected(true); // bind
+        setGraphic(checkbox);
     }
 
     
@@ -37,10 +37,22 @@ public class EnabledCell extends TableCell<Layer, Boolean> {
             System.out.println("Empty");
         } else {
            setGraphic(checkbox);
+           if(item.booleanValue()==true)
+               checkbox.setSelected(true);
+           else
+               checkbox.setSelected(false);
+           //System.out.println("Item : " + item);
            checkbox.selectedProperty().addListener(new ChangeListener(){
 
                @Override
                public void changed(ObservableValue ov, Object t, Object t1) {
+                   if(ov.getValue() instanceof Boolean)
+                       if((Boolean)ov.getValue()==true)
+                       {
+                           getTableView().getItems().get(getTableRow().getIndex()).getLaf().enable();
+                       } else {
+                           getTableView().getItems().get(getTableRow().getIndex()).getLaf().disable();
+                       }
                    
                }
            });
@@ -54,6 +66,7 @@ public class EnabledCell extends TableCell<Layer, Boolean> {
 
     public void setCheckbox(CheckBox checkbox) {
         this.checkbox = checkbox;
+        
     }
     
 }

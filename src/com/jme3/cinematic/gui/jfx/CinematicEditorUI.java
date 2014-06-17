@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  */
 public class CinematicEditorUI extends Application{
     TimelineControl timelineControl ;
-    TimelineUI timeline = new TimelineUI();
+   // TimelineUI timeline = new TimelineUI();
     LayerContainerControl layerContainer ;
     @Override
     public void start(Stage stage) throws Exception {

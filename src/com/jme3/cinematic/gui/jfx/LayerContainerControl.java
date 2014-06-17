@@ -7,8 +7,10 @@ package com.jme3.cinematic.gui.jfx;
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.CinematicClip;
 import com.jme3.gde.cinematic.core.Layer;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,9 +21,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 /**
@@ -47,7 +47,7 @@ public class LayerContainerControl extends AnchorPane{
     }
 
     public void initLayerContainer(){
-        
+        /* Enabled checkbox Column */
         enabled = new TableColumn<>();
         enabled.setMinWidth(USE_PREF_SIZE);
         enabled.setPrefWidth(20);
@@ -65,10 +65,10 @@ public class LayerContainerControl extends AnchorPane{
 
             @Override
             public ObservableValue<Boolean> call(CellDataFeatures<Layer, Boolean> p) {
-                if (p.getValue().getLaf().isCollapsed()) {
-                    return new SimpleBooleanProperty(false);
-                } else {
+                if (p.getValue().getLaf().isEnabled()) {
                     return new SimpleBooleanProperty(true);
+                } else {
+                    return new SimpleBooleanProperty(false);
                 }
             
             }
@@ -76,6 +76,8 @@ public class LayerContainerControl extends AnchorPane{
         });
         layerContainer.getColumns().add(enabled);
         
+        
+        /* layerName Column*/
         layerName  = new TableColumn<>();
         layerName.setMinWidth(USE_PREF_SIZE);
         layerName.setPrefWidth(180);
@@ -85,21 +87,56 @@ public class LayerContainerControl extends AnchorPane{
 
             @Override
             public TableCell<Layer, String> call(TableColumn<Layer, String> p) {
-               return null;
+               return new LayerNameCell();
             }
         
         });
-        TableColumn column = (TableColumn)layerContainer.getColumns().get(0);
-        
-        System.out.println(column.getMinWidth());
-        column.setGraphic(new ToggleButton());
-        column.setCellFactory(new Callback() {
+        layerName.setCellValueFactory(new Callback<CellDataFeatures<Layer,String>,ObservableValue<String>>() {
 
             @Override
-            public Object call(Object p) {
-                return new ChildVisibilityCell(root.getChildren().get(0));
+            public ObservableValue<String> call(final CellDataFeatures<Layer, String> p) {
+                String val = p.getValue().getName();
+                StringProperty displayName = new SimpleStringProperty(val);
+                displayName.addListener(new ChangeListener<String>(){
+
+                    @Override
+                    public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+                        if(!t1.equals(p.getValue().getName()))
+                           p.getValue().setName(t1);
+                    }
+                
+                });
+                return displayName;
+            }
+
+            
+        });
+        layerContainer.getColumns().add(layerName);
+        
+        /*** show children/ childVisibility column ***/
+        childVisibility = new TableColumn<>();
+        childVisibility.setMinWidth(USE_PREF_SIZE);
+        childVisibility.setPrefWidth(20);
+        childVisibility.setGraphic(null);// TODO replace with a .ico file
+        childVisibility.setCellFactory(new Callback<TableColumn<Layer,Boolean>,TableCell<Layer,Boolean>>(){
+
+            @Override
+            public TableCell<Layer, Boolean> call(TableColumn<Layer, Boolean> p) {
+                return new ChildVisibilityCell();
+            }
+        
+        });
+        childVisibility.setCellValueFactory(new Callback<CellDataFeatures<Layer, Boolean>, ObservableValue<Boolean>>() {
+
+            @Override
+            public ObservableValue<Boolean> call(CellDataFeatures<Layer, Boolean> p) {
+                if(p.getValue().getLaf().isCollapsed())
+                    return new SimpleBooleanProperty(true);
+                else
+                    return new SimpleBooleanProperty(false);
             }
         });
+        layerContainer.getColumns().add(1,childVisibility);
         initTestRoot();
         seedTable();
     }
@@ -112,6 +149,7 @@ public class LayerContainerControl extends AnchorPane{
         Layer sibling = new Layer("Sibling",root);
         Layer grandChild = new Layer("GrandChild",child);
         Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
+        System.out.println("sibling : " + sibling.getLaf().isCollapsed());
         
        // scrollBarH.setVisible(false);
 
@@ -120,11 +158,12 @@ public class LayerContainerControl extends AnchorPane{
     private void seedTable() {
         ObservableList<Layer> data = FXCollections.observableArrayList(root);
         for(Layer child:root.getChildren())
-            data.add(child);
+         ; //  data.add(child);
         
         layerContainer.setItems(data);
-        for(Layer layer:root.getChildren())
-            data.add(layer);
+        //data.add(root.getChildren().get(0).getChildren().get(0));
+        //data.add(root.getChildren().get(1).getChildren().get(0));
+            
     }
     
     public ScrollBar getVScrollBar(){

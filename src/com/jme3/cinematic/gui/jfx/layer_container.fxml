@@ -8,12 +8,6 @@
 
 <fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="220.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <children>
-    <TableView fx:id="layerContainer" layoutX="0.0" layoutY="0.0" prefHeight="210.0" prefWidth="220.0" tableMenuButtonVisible="true">
-      <columns>
-        <TableColumn editable="false" prefWidth="20.0" sortable="false" text="E" visible="true" />
-        <TableColumn editable="false" prefWidth="20.0" sortable="false" text="D" />
-        <TableColumn prefWidth="166.0" sortable="false" text="Layer" />
-      </columns>
-    </TableView>
+    <TableView fx:id="layerContainer" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="210.0" prefWidth="220.0" tableMenuButtonVisible="true" />
   </children>
 </fx:root>

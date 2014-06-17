@@ -23,7 +23,7 @@ public class Layer {
     private List<Layer> descendants;
     private LayerLAF laf; // look and feel
     private List<Integer> index;
-    
+    private boolean showChildren = false;
   
     /**
      * Use for creating a Child
