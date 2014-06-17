@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.net.*?>
 <?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml">
-    <stylesheets>
-        <URL value="@layer_container.css"/>
-    </stylesheets>
-</AnchorPane>
+<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="220.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <TableView fx:id="layerContainer" layoutX="0.0" layoutY="0.0" prefHeight="210.0" prefWidth="220.0" tableMenuButtonVisible="true">
+      <columns>
+        <TableColumn editable="false" prefWidth="20.0" sortable="false" text="E" visible="true" />
+        <TableColumn editable="false" prefWidth="20.0" sortable="false" text="D" />
+        <TableColumn prefWidth="166.0" sortable="false" text="Layer" />
+      </columns>
+    </TableView>
+  </children>
+</fx:root>

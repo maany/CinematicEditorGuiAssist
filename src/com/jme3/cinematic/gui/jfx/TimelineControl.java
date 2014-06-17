@@ -168,6 +168,8 @@ public class TimelineControl extends VBox {
         timebar.setPrefWidth(timebar.getPrefWidth()/magnification.doubleValue());
         timeslider.setTranslateX(timeslider.getTranslateX()/magnification.doubleValue());
         magnification.set(1);
+        duration.setValue(60);
+        durationInput.setText(duration.getValue().toString());
         Integer majorTickUnit = new Integer((int) (zoom.getMax()));
                     System.out.println("Majot Tick Unit : " + majorTickUnit);
                 timebar.setMajorTickUnit(majorTickUnit);
@@ -238,6 +240,8 @@ public class TimelineControl extends VBox {
                 {
                     System.out.println("invalid duration"  + duration.getValue());
                     durationInput.setText(duration.getValue().toString());
+                    //TODO see jme convention
+                    ex.printStackTrace();
                 }
             }
         });

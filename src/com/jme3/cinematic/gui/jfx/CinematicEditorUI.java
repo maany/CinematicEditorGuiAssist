@@ -4,9 +4,12 @@
  */
 package com.jme3.cinematic.gui.jfx;
 
-import javafx.animation.Timeline;
+
+
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
 import javafx.stage.Stage;
 
 /**
@@ -15,14 +18,20 @@ import javafx.stage.Stage;
  */
 public class CinematicEditorUI extends Application{
     TimelineControl timelineControl ;
-    Timeline timeline = new Timeline();
+    TimelineUI timeline = new TimelineUI();
+    LayerContainerControl layerContainer ;
     @Override
     public void start(Stage stage) throws Exception {
+        layerContainer = new LayerContainerControl();
         timelineControl = new TimelineControl();
-        Scene scene = new Scene(timelineControl,440,205);
+        Scene scene;
+        scene = new Scene(layerContainer,440,205);
         stage.setScene(scene);
         stage.show();
-        timelineControl.initTimeline();
+        layerContainer.initLayerContainer();
+        ScrollBar vScrollBar = layerContainer.getVScrollBar();
+        System.out.println("ScrolBar : " + vScrollBar.toString());
+        //   timelineControl.initTimeline();
         //timeline.test();
         //timeline.getCurrentTime().setValue(10);
     }
