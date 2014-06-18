@@ -31,10 +31,11 @@ import javafx.util.Callback;
  */
 public class LayerContainerControl extends AnchorPane{
     @FXML
-    TableView layerContainer ;
-    Layer root;//TODO remove, only testing
-    TableColumn<Layer,Boolean> childVisibility,enabled;
-    TableColumn<Layer,String> layerName;
+    private TableView layerContainer ;
+    private Layer root;//TODO remove, only testing
+    private TableColumn<Layer,Boolean> childVisibility,enabled;
+    private TableColumn<Layer,String> layerName;
+    private CinematicEditorUI cinematicEditor;
     public LayerContainerControl(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layer_container.fxml"));
         loader.setRoot(this);
@@ -126,7 +127,7 @@ public class LayerContainerControl extends AnchorPane{
 
             @Override
             public TableCell<Layer, Boolean> call(TableColumn<Layer, Boolean> p) {
-                return new ChildVisibilityCell();
+                return new ChildVisibilityCell(cinematicEditor);
             }
         
         });
@@ -180,6 +181,15 @@ public class LayerContainerControl extends AnchorPane{
     public void addLayerView(int index,Layer layer){
         layerContainer.getItems().add(index, layer);
     }
+    /**
+     * hides the layer view in the layerContainer
+     * @param index 
+     */
+    public void removeLayerView(int index)
+    {
+        layerContainer.getItems().remove(index);
+    }
+   
     public ScrollBar getVScrollBar(){
         ScrollBar  scrollBarV = (ScrollBar) layerContainer.lookup(".scroll-bar:vertical");
         return scrollBarV;
@@ -191,6 +201,14 @@ public class LayerContainerControl extends AnchorPane{
 
     public void setLayerContainer(TableView layerContainer) {
         this.layerContainer = layerContainer;
+    }
+
+    public CinematicEditorUI getCinematicEditor() {
+        return cinematicEditor;
+    }
+
+    public void setCinematicEditor(CinematicEditorUI cinematicEditor) {
+        this.cinematicEditor = cinematicEditor;
     }
     
 }

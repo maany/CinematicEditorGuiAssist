@@ -4,9 +4,13 @@
  */
 package com.jme3.cinematic.gui.jfx;
 
+import com.jme3.gde.cinematic.CinematicEditorManager;
+import com.jme3.gde.cinematic.core.CinematicClip;
+import com.jme3.gde.cinematic.core.Layer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 
 /**
  *
@@ -17,6 +21,7 @@ public class StartHere extends Application{
     TimelineControl timeline;
     LayerContainerControl layerContainer;
     Scene scene;
+    Layer root;
     @Override
     public void start(Stage stage) throws Exception {
         launchCinematicEditor(stage);
@@ -30,7 +35,24 @@ public class StartHere extends Application{
         scene.getStylesheets().add(getClass().getResource("layer_container.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
+        initRoot();
+        cinematicEditor.getLayerContainer().setCinematicEditor(cinematicEditor);
         cinematicEditor.initCinematicEditorUI();
+        cinematicEditor.initView(root);
+        
+    }
+    public void initRoot() {
+        CinematicClip clip = new CinematicClip("MyClip");
+        CinematicEditorManager.getInstance().setCurrentClip(clip);
+        root = new Layer("MyClip-root",null);
+        clip.setRoot(root);
+        Layer child = new Layer("Child",root);
+        for(int i=1;i<=10;i++){
+            child = new Layer("Child" + i,root);
+         }
+        Layer sibling = new Layer("Sibling",root);
+        Layer grandChild = new Layer("GrandChild",child);
+        Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
     }
     public void launchTimeline(Stage stage){
         timeline = new TimelineControl();

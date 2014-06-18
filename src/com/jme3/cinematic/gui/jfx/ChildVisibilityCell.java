@@ -18,9 +18,11 @@ import javafx.scene.input.MouseEvent;
  */
 public class ChildVisibilityCell extends TableCell<Layer,Boolean>{
     private Button button;
+    private CinematicEditorUI cinematicEditor;
     
 
-    ChildVisibilityCell() {
+    ChildVisibilityCell(final CinematicEditorUI cinematicEditor) {
+        this.cinematicEditor = cinematicEditor;
         button = new Button();
         this.setAlignment(Pos.CENTER);
         button.setAlignment(Pos.CENTER);
@@ -34,13 +36,15 @@ public class ChildVisibilityCell extends TableCell<Layer,Boolean>{
                 if (layer.getLaf().isCollapsed() == true) {
                     layer.getLaf().setCollapsed(false);
                     System.out.println("current layer : " + layer.getName() + " was collapsed. Showing its children"  );
-                    getTableView().getItems().addAll(index+1,layer.getChildren());
+                    cinematicEditor.showChildren(layer);
+                    // getTableView().getItems().addAll(index+1,layer.getChildren());
                 } else {
                     layer.getLaf().setCollapsed(true);
                     System.out.println("Curent layer : " + layer.getName() + " was not collapsed. Hiding its children");
                     System.out.println("Removing from " + (index+1) + " to " + (layer.getChildren().size()+index));
+                    cinematicEditor.hideChildren(layer);
                     //for(int i=index+1;i<index+1+layer.getChildren())
-                    getTableView().getItems().remove(index+1,index + layer.getChildren().size()+1);
+                    //getTableView().getItems().remove(index+1,index + layer.getChildren().size()+1);
                 }
 
             }

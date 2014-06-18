@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -263,7 +265,19 @@ public class TimelineControl extends VBox {
      * @param layer 
      */
     public void addLayerView(int index, Layer layer) {
-        
+        AnchorPane eventStrip = new AnchorPane();
+        eventStrip.setPrefHeight(CinematicEditorUI.ROW_HEIGHT);
+        eventStrip.setMinHeight(USE_PREF_SIZE);
+        eventStrip.setMaxHeight(USE_PREF_SIZE);
+        /*
+         * Add code for rendering events
+         */
+        eventStrip.getChildren().add(new Button("Layer" + index));
+        timelineScrollPaneVBox.getChildren().add(index, eventStrip);
+    }
+    public void removeLayerView(int index) {
+        AnchorPane eventStrip = (AnchorPane)timelineScrollPaneVBox.getChildren().remove(index);
+        //System.out.println("Removed : " + eventStrip);
     }
     public DoubleProperty getDuration() {
         return duration;

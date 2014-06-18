@@ -11,6 +11,8 @@ import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.CinematicClip;
 import com.jme3.gde.cinematic.core.Layer;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollBar;
@@ -49,17 +51,7 @@ public class CinematicEditorUI extends AnchorPane{
         
     }
     public void initTestRoot() {
-        CinematicClip clip = new CinematicClip("MyClip");
-        CinematicEditorManager.getInstance().setCurrentClip(clip);
-        root = new Layer("MyClip-root",null);
-        clip.setRoot(root);
-        Layer child = new Layer("Child",root);
-        for(int i=1;i<=10;i++){
-            child = new Layer("Child" + i,root);
-         }
-        Layer sibling = new Layer("Sibling",root);
-        Layer grandChild = new Layer("GrandChild",child);
-        Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
+        
     }
     
     public void initCinematicEditorUI() {
@@ -111,8 +103,22 @@ public class CinematicEditorUI extends AnchorPane{
         
     }
 
-    private void addNewLayer(Layer layer){
+    /**
+     * Creates a new layer, attached it to root and renders the layer view.
+     * @param layer 
+     */
+    public void addNewLayer(Layer layer){
     
+    }
+    /**
+     * deletes the layer and removes layer view + descendant layer view.
+     * @param index
+     * @param layer 
+     */
+    public void removeLayer(int index, Layer layer) {
+        layer.getParent().getChildren().remove(layer);
+        removeLayerView(getIndex(layer));
+        hideChildren(layer);
     }
     /**
      * creates the layer view of an existing layer. The layer view consists of a layerContainer part and a timeline part.
@@ -122,15 +128,37 @@ public class CinematicEditorUI extends AnchorPane{
          layerContainer.addLayerView(index,layer);
          timeline.addLayerView(index,layer);
     }
+    /**
+     * hides the layer view for the Layer at given index in the layerContainer
+     * hides only 1 layer view
+     * @param index 
+     */
     
-    public void removeLayerView(Layer layer) {
-        
+    public void removeLayerView(int index) {
+        layerContainer.removeLayerView(index);
+        timeline.removeLayerView(index);
     }
+    /**
+     * show visible children and visible descendants
+     * @param parent 
+     */
     public void showChildren(Layer parent) {
+        int index = getIndex(parent) + 1;
         
+        for(Layer layer:parent.getVisibleDescendants()) {
+            addLayerView(index, layer);
+            index++;
+        }
     }
+    /**
+     * hides the layer view and all descendant layer views
+     * @param parent 
+     */
     public void hideChildren(Layer parent){
         
+        for (Layer descendant : parent.findAllVisibleDescendants()) {
+            removeLayerView(getIndex(descendant));
+        }
     }
     /**
      * Based on the root it creates layers in the editor
@@ -148,19 +176,37 @@ public class CinematicEditorUI extends AnchorPane{
         }
     }
     /**
-     * Finds all visibile layers and shows them in the editor in proper heirarchy
+     * Finds all visibile layers and shows them in the editor in proper heirarchy. 
+     * If layer views get messed up, this method should be used to reload the entire view
      */
     public void syncView() {
         int index=0;
         for(Layer layer:(List<Layer>)layerContainerTableView.getItems())
         {
-            removeLayerView(layer);
+            removeLayerView(index);
+            index++;
         }
+        index = 0;
         for(Layer layer:root.findAllVisibleDescendants()){
             addLayerView(index,layer);
             index++;
         }
             
+    }
+    /**
+     * return the index of layer in the TableView
+     * @param layer
+     * @return 
+     */
+    private int getIndex(Layer layer) {
+        int index =-1;
+            for(int i=0;i<layerContainerTableView.getItems().size();i++)
+            {
+                Layer inViewLayer = (Layer) layerContainerTableView.getItems().get(i);
+                if(inViewLayer==layer)
+                    index=i; 
+            }
+        return index;
     }
     public Layer getRoot() {
         return root;
@@ -170,6 +216,14 @@ public class CinematicEditorUI extends AnchorPane{
         this.root = root;
     }
 
+    public LayerContainerControl getLayerContainer() {
+        return layerContainer;
+    }
+
+    public void setLayerContainer(LayerContainerControl layerContainer) {
+        this.layerContainer = layerContainer;
+    }
+    
     
     
 }
