@@ -10,7 +10,10 @@
 
 <fx:root type="javafx.scene.layout.AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="660.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <children>
-    <TimelineControl id="VBox" fx:id="timeline" alignment="CENTER" layoutX="270.0" layoutY="0.0" prefHeight="220.0" prefWidth="446.0" spacing="5.0" />
-    <LayerContainerControl id="AnchorPane" fx:id="layerContainer" layoutX="0.0" layoutY="0.0" />
+    <ScrollPane id="ScrollPane" layoutX="220.0" layoutY="-2.0" prefViewportHeight="219.0" prefViewportWidth="440.0">
+      <content>
+        <TimelineControl id="VBox" fx:id="timeline" alignment="CENTER" prefHeight="210.0" prefWidth="440.0" spacing="0.0" />
+      </content>
+    </ScrollPane>
   </children>
 </fx:root>

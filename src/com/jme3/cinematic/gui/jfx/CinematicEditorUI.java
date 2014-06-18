@@ -20,8 +20,8 @@ import javafx.stage.Stage;
 public class CinematicEditorUI extends AnchorPane{
     @FXML
     TimelineControl timeline ;
-    @FXML
-    LayerContainerControl layerContainer ;
+//    @FXML
+//    LayerContainerControl layerContainer ;
     
     public CinematicEditorUI() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CinematicEditorUI.fxml"));
@@ -38,10 +38,10 @@ public class CinematicEditorUI extends AnchorPane{
     }
     public void initCinematicEditorUI() {
         timeline.initTimeline();
-        layerContainer.initLayerContainer();
+       // layerContainer.initLayerContainer();
     }
     public void start(Stage stage) throws Exception {
-        layerContainer = new LayerContainerControl();
+       /* layerContainer = new LayerContainerControl();
         timeline = new TimelineControl();
         Scene scene;
         scene = new Scene(layerContainer,440,205);
@@ -49,7 +49,7 @@ public class CinematicEditorUI extends AnchorPane{
         stage.show();
         layerContainer.initLayerContainer();
         ScrollBar vScrollBar = layerContainer.getVScrollBar();
-        System.out.println("ScrolBar : " + vScrollBar.toString());
+        System.out.println("ScrolBar : " + vScrollBar.toString()); */
         //   timelineControl.initTimeline();
         //timeline.test();
         //timeline.getCurrentTime().setValue(10);

@@ -19,10 +19,11 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -48,6 +49,10 @@ public class TimelineControl extends VBox {
     private AnchorPane anchor;
     @FXML
     private TextField durationInput;
+    @FXML
+    private StackPane timebarTimeSliderStackPane;
+    @FXML
+    private Group timebarTimesliderSuperGroup;
     private DoubleProperty currentTime = new SimpleDoubleProperty(0);
     private DoubleProperty magnification = new SimpleDoubleProperty();
     private DoubleProperty maxMagnification = new SimpleDoubleProperty();
@@ -83,7 +88,9 @@ public class TimelineControl extends VBox {
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
                 double extraDistance = timelineScrollPaneVBox.getPrefWidth() - timelineScrollPane.getPrefWidth();
                 double timebarHVal = -1 * t1.doubleValue() * extraDistance;
-                timebarTimesliderGroup.setTranslateX(timebarHVal);
+                timebarTimesliderSuperGroup.setTranslateX(timebarHVal);
+                //System.out.println("Margins : " +  getMargin(zoom));
+                System.out.println("Positions : " + timebarTimesliderSuperGroup.getTranslateX());
             }
         });
 
@@ -177,6 +184,10 @@ public class TimelineControl extends VBox {
     }
     public final void initView() {
         resetView();
+        Rectangle timebarClip = new Rectangle(0,0,440,190);
+        //timebarTimeSliderStackPane.getChildren().add(timebarClip);
+        timebarTimeSliderStackPane.setClip(timebarClip);
+        //timebarTimesliderSuperGroup
         maxMagnification.bindBidirectional(zoom.maxProperty());
         magnification.bindBidirectional(zoom.valueProperty());
         magnification.addListener(new ChangeListener<Number>() {
@@ -189,7 +200,7 @@ public class TimelineControl extends VBox {
                     timelineScrollPaneVBox.setPrefWidth(currentWidth);
                     timebar.setPrefWidth(currentWidth);
                     currentTime.setValue(timebar.getValue());
-                    
+                    System.out.println("Current Width : " + currentWidth);
                     // change ticks
                     Integer majorTickUnit = new Integer((int) (zoom.getMax() + zoom.getMin() - mag.floatValue()));
                     timebar.setMajorTickUnit(majorTickUnit);
