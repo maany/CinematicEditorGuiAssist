@@ -4,6 +4,7 @@
  */
 package com.jme3.cinematic.gui.jfx;
 
+import com.jme3.gde.cinematic.core.Layer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -126,7 +127,6 @@ public class TimelineControl extends VBox {
         
         
     }
-
 
     class Delta {
 
@@ -257,6 +257,14 @@ public class TimelineControl extends VBox {
             }
         });
     }
+    /**
+     * Creates a layer view in the timeline for the given layer at the given index
+     * @param index
+     * @param layer 
+     */
+    public void addLayerView(int index, Layer layer) {
+        
+    }
     public DoubleProperty getDuration() {
         return duration;
     }
@@ -271,6 +279,14 @@ public class TimelineControl extends VBox {
 
     public void setTimelineScrollPane(ScrollPane timelineScrollPane) {
         this.timelineScrollPane = timelineScrollPane;
+    }
+
+    public VBox getTimelineScrollPaneVBox() {
+        return timelineScrollPaneVBox;
+    }
+
+    public void setTimelineScrollPaneVBox(VBox timelineScrollPaneVBox) {
+        this.timelineScrollPaneVBox = timelineScrollPaneVBox;
     }
     
     

@@ -141,8 +141,8 @@ public class LayerContainerControl extends AnchorPane{
             }
         });
         layerContainer.getColumns().add(1,childVisibility);
-        initTestRoot();
-        seedTable();
+        //initTestRoot();
+       // seedTable();
     }
     private void initTestRoot() {
         CinematicClip clip = new CinematicClip("MyClip");
@@ -172,9 +172,25 @@ public class LayerContainerControl extends AnchorPane{
         //data.add(root.getChildren().get(1).getChildren().get(0));
             
     }
-    
+    /**
+     * Adds a layer view in the layerContainer at given index. 
+     * @param index
+     * @param layer 
+     */
+    public void addLayerView(int index,Layer layer){
+        layerContainer.getItems().add(index, layer);
+    }
     public ScrollBar getVScrollBar(){
         ScrollBar  scrollBarV = (ScrollBar) layerContainer.lookup(".scroll-bar:vertical");
         return scrollBarV;
     }
+
+    public TableView getLayerContainer() {
+        return layerContainer;
+    }
+
+    public void setLayerContainer(TableView layerContainer) {
+        this.layerContainer = layerContainer;
+    }
+    
 }
