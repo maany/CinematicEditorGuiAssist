@@ -20,8 +20,8 @@ import javafx.stage.Stage;
 public class CinematicEditorUI extends AnchorPane{
     @FXML
     TimelineControl timeline ;
-//    @FXML
-//    LayerContainerControl layerContainer ;
+    @FXML
+    LayerContainerControl layerContainer ;
     
     public CinematicEditorUI() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("CinematicEditorUI.fxml"));
@@ -38,7 +38,7 @@ public class CinematicEditorUI extends AnchorPane{
     }
     public void initCinematicEditorUI() {
         timeline.initTimeline();
-       // layerContainer.initLayerContainer();
+        layerContainer.initLayerContainer();
     }
     public void start(Stage stage) throws Exception {
        /* layerContainer = new LayerContainerControl();

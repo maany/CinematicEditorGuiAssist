@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root type="javafx.scene.layout.VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="440.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-  <StackPane id="StackPane" fx:id="timebarTimeSliderStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="190.0" prefWidth="440.0" VBox.margin="$x1">
+  <StackPane id="StackPane" fx:id="timebarTimeSliderStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="185.0" prefWidth="440.0" VBox.margin="$x1">
     <children>
       <Group id="Group" StackPane.alignment="CENTER_LEFT">
         <children>
@@ -35,7 +35,7 @@
           <Insets fx:id="x1" />
         </StackPane.margin>
       </Group>
-      <Group id="Group" fx:id="timebarTimesliderSuperGroup" StackPane.alignment="CENTER_LEFT" StackPane.margin="$x1">
+      <Group id="Group" fx:id="timebarTimesliderSuperGroup" scaleX="1.0" scaleY="1.0" StackPane.alignment="CENTER_LEFT" StackPane.margin="$x1">
         <children>
           <Group id="Group" fx:id="timebarTimesliderGroup" layoutX="0.0" layoutY="0.0" scaleX="1.0" scaleY="1.0">
             <children>
@@ -55,7 +55,7 @@
       </Group>
     </children>
   </StackPane>
-  <ToolBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="440.0" rotate="0.0">
+  <ToolBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="440.0" rotate="0.0" VBox.margin="$x1">
     <items>
       <ToggleButton fx:id="snapToggle" mnemonicParsing="false" text="SNAP" textAlignment="CENTER" />
       <Slider fx:id="zoom" blockIncrement="1.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefWidth="68.0" rotate="0.0" showTickLabels="false" showTickMarks="false" snapToTicks="true" value="1.0" />

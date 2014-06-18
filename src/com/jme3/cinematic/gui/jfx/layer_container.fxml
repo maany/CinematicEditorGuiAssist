@@ -6,8 +6,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="210.0" prefWidth="220.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<fx:root type="javafx.scene.layout.AnchorPane" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="215.0" prefWidth="220.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <children>
-    <TableView fx:id="layerContainer" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="210.0" prefWidth="220.0" tableMenuButtonVisible="true" />
+    <TableView fx:id="layerContainer" editable="true" layoutX="0.0" layoutY="0.0" prefHeight="185.0" prefWidth="220.0" tableMenuButtonVisible="true" />
+    <ToolBar layoutX="0.0" layoutY="185.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="220.0">
+      <items>
+        <Button mnemonicParsing="false" text="Button" />
+      </items>
+    </ToolBar>
   </children>
 </fx:root>
