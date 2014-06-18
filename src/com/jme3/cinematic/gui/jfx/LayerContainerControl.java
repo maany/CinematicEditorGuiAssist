@@ -22,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.util.Callback;
 
 /**
@@ -38,6 +39,7 @@ public class LayerContainerControl extends AnchorPane{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("layer_container.fxml"));
         loader.setRoot(this);
         loader.setController(this);
+        
         try {
             loader.load();
         } catch (Exception ex) {
@@ -87,8 +89,10 @@ public class LayerContainerControl extends AnchorPane{
 
             @Override
             public TableCell<Layer, String> call(TableColumn<Layer, String> p) {
-               return new LayerNameCell();
+                 return new LayerNameCell();
             }
+
+            
         
         });
         layerName.setCellValueFactory(new Callback<CellDataFeatures<Layer,String>,ObservableValue<String>>() {
@@ -146,10 +150,13 @@ public class LayerContainerControl extends AnchorPane{
         root = new Layer("MyClip-root",null);
         clip.setRoot(root);
         Layer child = new Layer("Child",root);
+        for(int i=1;i<=10;i++){
+            child = new Layer("Child" + i,root);
+         }
         Layer sibling = new Layer("Sibling",root);
         Layer grandChild = new Layer("GrandChild",child);
         Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
-        System.out.println("sibling : " + sibling.getLaf().isCollapsed());
+      //  System.out.println("sibling : " + sibling.getLaf().isCollapsed());
         
        // scrollBarH.setVisible(false);
 

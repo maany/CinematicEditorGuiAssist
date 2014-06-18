@@ -6,10 +6,11 @@ package com.jme3.cinematic.gui.jfx;
 
 
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -39,6 +40,8 @@ public class CinematicEditorUI extends AnchorPane{
     public void initCinematicEditorUI() {
         timeline.initTimeline();
         layerContainer.initLayerContainer();
+        linkHeight();
+        linkVerticalScrolling();
     }
     public void start(Stage stage) throws Exception {
        /* layerContainer = new LayerContainerControl();
@@ -53,6 +56,18 @@ public class CinematicEditorUI extends AnchorPane{
         //   timelineControl.initTimeline();
         //timeline.test();
         //timeline.getCurrentTime().setValue(10);
+    }
+
+    private void linkHeight() {
+        
+    }
+    private void linkVerticalScrolling() {
+        ScrollBar vbar = layerContainer.getVScrollBar();
+        ScrollPane timelineScrollPane = timeline.getTimelineScrollPane();
+        timelineScrollPane.vmaxProperty().bindBidirectional(vbar.maxProperty());
+        timelineScrollPane.vminProperty().bindBidirectional(vbar.minProperty());
+        timelineScrollPane.vvalueProperty().bindBidirectional(vbar.valueProperty());
+        
     }
     
 }

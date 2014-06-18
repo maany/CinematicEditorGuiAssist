@@ -264,5 +264,14 @@ public class TimelineControl extends VBox {
     public DoubleProperty getFrameRate() {
         return frameRate;
     }
+
+    public ScrollPane getTimelineScrollPane() {
+        return timelineScrollPane;
+    }
+
+    public void setTimelineScrollPane(ScrollPane timelineScrollPane) {
+        this.timelineScrollPane = timelineScrollPane;
+    }
+    
     
 }

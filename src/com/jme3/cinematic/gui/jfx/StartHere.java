@@ -27,6 +27,7 @@ public class StartHere extends Application{
     public void launchCinematicEditor(Stage stage) {
         cinematicEditor = new CinematicEditorUI();
         scene = new Scene(cinematicEditor,660,220);
+        scene.getStylesheets().add(getClass().getResource("layer_container.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
         cinematicEditor.initCinematicEditorUI();
@@ -42,6 +43,7 @@ public class StartHere extends Application{
     public void launchLayerContainer(Stage stage){
         layerContainer = new LayerContainerControl();
         scene = new Scene(layerContainer,220,220);
+        scene.getStylesheets().add(getClass().getResource("layer_container.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
         layerContainer.initLayerContainer();
