@@ -21,9 +21,11 @@ public class Layer {
     private List<Layer> children;
     private Layer parent; // for child to parent link
     private List<Layer> descendants;
+    private List<Layer> visibleDescendants;
     private LayerLAF laf; // look and feel
     private List<Integer> index;
     private boolean showChildren = false;
+    private boolean tempLeaf = false;
   
     /**
      * Use for creating a Child
@@ -37,6 +39,7 @@ public class Layer {
         this.parent = parent;
         children = new ArrayList<>();
         descendants = new ArrayList<>();
+        visibleDescendants = new ArrayList<>();
         laf = GuiManager.DEFAULT_LAYER_LAF;
         
         if(parent!=null)
@@ -76,37 +79,70 @@ public class Layer {
      * @param layer
      * @return 
      */
-    public List<Layer> findAllDescendants () {
-        if(this.hasChildren())
-            for(Layer child:this.getChildren())
-            {
-                if(!descendants.contains(this))
-                    descendants.add(this);
-                child.findAllDescendants();
-            }
-        else
-            descendants.add(this);
-        return getDescendants();
+    public List<Layer> findAllDescendants() {
+        //descendants = new ArrayList<>();
+        if (!this.tempLeaf) {
+            System.out.println(this.getName() + " is not a temp leaf");
+            int index=1;
+            for (Layer child : this.getChildren()) {
+                ;
+                System.out.println("Child " + index + " of " + this.getName() +" is " +child.getName());
+                index++;
+                    descendants.add(child);
+                    descendants.addAll(child.findAllDescendants());
+                    //System.out.println("Recieved value in " + this.getName());
+                   // break;
+                
+                //System.out.println("Continueing in " + this.getName());
+                //continue;
+                // if (!descendants.contains(child)) {
+                   // System.out.println("Adding " + child.getName() + " as descendant of " + this.getName());
+                    //descendants.add(child);
+             //   }
+                //descendants.addAll(child.findAllDescendants());
+                //if(reverseTraversal ==true)
+                 //   return true;
+            } 
+            tempLeaf = true; 
+            System.out.println( getName() +"is a temp leaf now. Returning descendants : " + descendants + " to " + this.getParent());
+            return descendants;
+        } else {
+            //System.out.println(this.getName() + " is a leaf node ");
+            //tempLeaf = true;
+            //descendants.add(this);
+            return descendants;
+            //this.getParent().getDescendants().add(this);
+        }
+        //if(this.parent!=null)
+        //System.out.println("Descendants of : " + this.getName() +"are " + this.getDescendants() );
+        //return true;
+        //return null;
+        
     }
       
     public List<Layer> findAllVisibleDescendants () {
+       // visibleDescendants = new ArrayList<>();
         if(this.hasChildren())
             for(Layer child:this.getChildren())
             {
                 if(this.getLaf().isCollapsed()) {
-                    if(!descendants.contains(this) )
-                    descendants.add(this);
+                    if(!visibleDescendants.contains(this) )
+                    visibleDescendants.add(this);
                     
                 }
                 else {
-                    if(!descendants.contains(this) )
-                    descendants.add(this);
+                    if(!visibleDescendants.contains(this) )
+                    visibleDescendants.add(this);
                     child.findAllDescendants();
                 }
             }
         else
-            descendants.add(this);
-        return getDescendants();
+            visibleDescendants.add(this);
+        return getVisibleDescendants();
+    }
+    @Override 
+    public String toString() {
+        return "Name : " + getName() + " depth : " + getDepth();
     }
     /*
      * Getters and Setters
@@ -143,6 +179,8 @@ public class Layer {
     }
 
     public List<Layer> getDescendants() {
+        tempLeaf = false;
+        findAllDescendants();
         return descendants;
     }
 
@@ -158,5 +196,13 @@ public class Layer {
         this.laf = laf;
     }
 
+    public List<Layer> getVisibleDescendants() {
+        return visibleDescendants;
+    }
+
+    public void setVisibleDescendants(List<Layer> visibleDescendants) {
+        this.visibleDescendants = visibleDescendants;
+    }
+    
    
 }

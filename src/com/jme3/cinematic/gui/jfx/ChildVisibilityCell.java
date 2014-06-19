@@ -69,7 +69,7 @@ public class ChildVisibilityCell extends TableCell<Layer,Boolean>{
             if (!item.booleanValue() == true) {
                 //  getTableView().getItems().addAll(getTableRow().getIndex() + 1, getTableView().getItems().get(getTableRow().getIndex()).getChildren());
             }
-            System.out.println("Rendering");
+          //  System.out.println("Rendering");
             // event handler
 
 

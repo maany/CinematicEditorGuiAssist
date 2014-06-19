@@ -34,7 +34,7 @@ public class EnabledCell extends TableCell<Layer, Boolean> {
         super.updateItem(item, empty);
         if (empty) {
             setGraphic(null);
-            System.out.println("Empty");
+            //System.out.println("Empty");
         } else {
            setGraphic(checkbox);
            if(item.booleanValue()==true)

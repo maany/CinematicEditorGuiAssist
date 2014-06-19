@@ -82,7 +82,7 @@ public class TimelineCanvas extends JPanel implements Scrollable{
      * @param layer 
      */
     public void populateWithChildren(Layer layer) {
-        entireLayerSpace = layer.findAllDescendants();
+        entireLayerSpace = layer.getDescendants();
     }
     
     

@@ -7,6 +7,7 @@ package com.jme3.cinematic.gui.jfx;
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.CinematicClip;
 import com.jme3.gde.cinematic.core.Layer;
+import java.util.List;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -47,12 +48,23 @@ public class StartHere extends Application{
         root = new Layer("MyClip-root",null);
         clip.setRoot(root);
         Layer child = new Layer("Child",root);
-        for(int i=1;i<=10;i++){
-            child = new Layer("Child" + i,root);
-         }
+        //for(int i=1;i<=10;i++){
+        //    child = new Layer("Child" + i,root);
+         //}
+        root.getLaf().setCollapsed(false);
+        child.getLaf().setCollapsed(false);
         Layer sibling = new Layer("Sibling",root);
         Layer grandChild = new Layer("GrandChild",child);
         Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
+        //List<Layer> visibleDescendants = root.findAllVisibleDescendants();
+        //System.out.println("Visible Descendants :" + visibleDescendants.size());
+        //for(Layer visible:visibleDescendants) 
+        //System.out.println("VisibleList : " + visible.getName());
+        
+        List<Layer> descendants = root.getDescendants();
+        System.out.println("Descendants : "+ descendants.size());
+        for(Layer descendant:descendants)
+            System.out.println("Descendant : " + descendant.getName());
     }
     public void launchTimeline(Stage stage){
         timeline = new TimelineControl();
