@@ -25,7 +25,8 @@ public class GuiManager {
     public static final int CHILD_Z_VALUE = 8;
     public static final int GRAND_CHILD_Z_VALUE = 6;
     public static final int GREAT_GRAND_CHILD_Z_VALUE = 4;
-    public static final LayerLAF DEFAULT_LAYER_LAF = new LayerLAF(Color.GRAY,true);
+    public static final Color DEFAULT_LAYER_COLOR = Color.GRAY;
+    public static final boolean DEFAULT_LAYER_COLLAPSED_STATE = true;
     private static GuiManager instance = null;
     
     private GuiManager(){}

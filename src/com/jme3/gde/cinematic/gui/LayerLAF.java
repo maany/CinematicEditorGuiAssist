@@ -4,6 +4,7 @@
  */
 package com.jme3.gde.cinematic.gui;
 
+import com.jme3.gde.cinematic.core.Layer;
 import java.awt.Color;
 
 /**
@@ -14,6 +15,7 @@ public class LayerLAF {
     private Color color;
     private boolean enabled = true;
     private boolean collapsed = true;
+    private Layer layer;
     /**
      * Used by LayerContainer's enabled column
      */
@@ -24,10 +26,11 @@ public class LayerLAF {
     public void enable(){
         System.out.println("Enabling Layer");
     }
-    public LayerLAF(Color color,boolean collapsed)
+    public LayerLAF(Color color,boolean collapsed,Layer layer)
     {
         this.color = color;
         this.collapsed = collapsed;
+        this.layer = layer;
     }
     public Color getColor() {
         return color;
@@ -36,8 +39,13 @@ public class LayerLAF {
     public void setColor(Color color) {
         this.color = color;
     }
-
+/**
+ * Returns the collapsed state of the layer. If layer has no children, it gets collapsed automatically
+ * @return 
+ */
     public boolean isCollapsed() {
+        if(!layer.hasChildren())
+            collapsed = true;
         return collapsed;
     }
 
@@ -55,6 +63,14 @@ public class LayerLAF {
             disable();
         else
             enable();
+    }
+
+    public Layer getLayer() {
+        return layer;
+    }
+
+    public void setLayer(Layer layer) {
+        this.layer = layer;
     }
     
 }

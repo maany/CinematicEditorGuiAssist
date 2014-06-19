@@ -56,15 +56,23 @@ public class StartHere extends Application{
         Layer sibling = new Layer("Sibling",root);
         Layer grandChild = new Layer("GrandChild",child);
         Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
-        //List<Layer> visibleDescendants = root.findAllVisibleDescendants();
-        //System.out.println("Visible Descendants :" + visibleDescendants.size());
-        //for(Layer visible:visibleDescendants) 
-        //System.out.println("VisibleList : " + visible.getName());
         
-        List<Layer> descendants = root.getDescendants();
+        System.out.println("Root : " + root.getLaf().isCollapsed());
+        System.out.println("Child : " + child.getLaf().isCollapsed());
+        System.out.println("Sibling : " + sibling.getLaf().isCollapsed());
+        System.out.println("GC : " + grandChild.getLaf().isCollapsed());
+        System.out.println("GCC : " + grandChildCousin.getLaf().isCollapsed());
+        
+        List<Layer> visibleDescendants = root.findAllVisibleDescendants();
+        System.out.println("Visible Descendants :" + visibleDescendants.size());
+        for(Layer visible:visibleDescendants) 
+        System.out.println("VisibleList : " + visible.getName());
+        
+       /* List<Layer> descendants = root.getDescendants();
         System.out.println("Descendants : "+ descendants.size());
         for(Layer descendant:descendants)
-            System.out.println("Descendant : " + descendant.getName());
+            System.out.println("Descendant : " + descendant.getName()); 
+            * */
     }
     public void launchTimeline(Stage stage){
         timeline = new TimelineControl();

@@ -180,7 +180,7 @@ public class TimelineControl extends VBox {
         duration.setValue(60);
         durationInput.setText(duration.getValue().toString());
         Integer majorTickUnit = new Integer((int) (zoom.getMax()));
-                    System.out.println("Majot Tick Unit : " + majorTickUnit);
+                    System.out.println("Major Tick Unit : " + majorTickUnit);
                 timebar.setMajorTickUnit(majorTickUnit);
                 timebar.setMinorTickCount(100/ majorTickUnit);
     }

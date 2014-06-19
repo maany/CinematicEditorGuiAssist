@@ -40,7 +40,7 @@ public class Layer {
         children = new ArrayList<>();
         descendants = new ArrayList<>();
         visibleDescendants = new ArrayList<>();
-        laf = GuiManager.DEFAULT_LAYER_LAF;
+        laf = new LayerLAF(GuiManager.DEFAULT_LAYER_COLOR,GuiManager.DEFAULT_LAYER_COLLAPSED_STATE,this);
         
         if(parent!=null)
         {
@@ -56,7 +56,7 @@ public class Layer {
 
     public Layer(String name,Layer parent,Color color,boolean collapsed) {
         this(name,parent);
-        laf = new LayerLAF(color,collapsed);
+        laf = new LayerLAF(color,collapsed,this);
     }
     /**
      * Avoid direct usage. Used by constructor to establish parent to child link.
@@ -122,10 +122,18 @@ public class Layer {
       
     public List<Layer> findAllVisibleDescendants () {
        // visibleDescendants = new ArrayList<>();
-        if(this.hasChildren())
+        if(this.hasChildren() && !this.getLaf().isCollapsed()) {
+            System.out.println(this.getName() + " has children and is not collapsed");
+            int index=0;
             for(Layer child:this.getChildren())
             {
-                if(this.getLaf().isCollapsed()) {
+                index++;
+                System.out.println("Child " +index + " of " + this.getName() + " is " + child.getName() );
+                System.out.println("Adding " + child.getName() + " as a Visible Descendant of " + this.getName());
+                visibleDescendants.add(child);
+                visibleDescendants.addAll(child.findAllVisibleDescendants());
+                
+             /*   if(this.getLaf().isCollapsed()) {
                     if(!visibleDescendants.contains(this) )
                     visibleDescendants.add(this);
                     
@@ -134,11 +142,13 @@ public class Layer {
                     if(!visibleDescendants.contains(this) )
                     visibleDescendants.add(this);
                     child.findAllDescendants();
-                }
+                } */
             }
-        else
-            visibleDescendants.add(this);
-        return getVisibleDescendants();
+        } else if(this.hasChildren() && this.getLaf().isCollapsed()){
+            System.out.println(" has children but is collapsed. Returning  empty Array List as Visible descendants to " + this.getParent());
+            visibleDescendants = new ArrayList<>();
+        }
+        return visibleDescendants;
     }
     @Override 
     public String toString() {
