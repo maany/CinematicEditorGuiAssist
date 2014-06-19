@@ -100,6 +100,13 @@ public class CinematicEditorUI extends AnchorPane{
         timelineScrollPane.vvalueProperty().bindBidirectional(vbar.valueProperty());
         
     }
+    /**
+     * A public method to be called everytime the height of editor changes. Known cases : when a new layer view is added/removed.
+     */
+    public void syncHeightAndVerticallScrolling() {
+        syncHeight();
+        syncVerticalScrolling();
+    }
 
     /**
      * Creates a new layer, attached it to root and renders the layer view.
@@ -125,6 +132,7 @@ public class CinematicEditorUI extends AnchorPane{
     private void addLayerView(int index,Layer layer) {
          layerContainer.addLayerView(index,layer);
          timeline.addLayerView(index,layer);
+         syncHeightAndVerticallScrolling();
     }
     /**
      * hides the layer view for the Layer at given index in the layerContainer
@@ -135,6 +143,7 @@ public class CinematicEditorUI extends AnchorPane{
     public void removeLayerView(int index) {
         layerContainer.removeLayerView(index);
         timeline.removeLayerView(index);
+        syncHeightAndVerticallScrolling();
     }
     /**
      * show visible children and visible descendants
