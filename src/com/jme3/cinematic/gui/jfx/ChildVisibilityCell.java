@@ -33,13 +33,13 @@ public class ChildVisibilityCell extends TableCell<Layer,Boolean>{
             public void handle(MouseEvent t) {
                 int index = getTableRow().getIndex();
                 Layer layer = getTableView().getItems().get(index);
-                if (layer.getLaf().isCollapsed() == true) {
+                if (layer.getLaf().isCollapsed()) {
                     layer.getLaf().setCollapsed(false);
-                    System.out.println("current layer : " + layer.getName() + " was collapsed. Showing its children"  );
+                    System.out.println("current layer : " + layer.getName() + " was collapsed."  + " Now it is collapsed? : "+ layer.getLaf().isCollapsed()+" Showing its children"  );
                     cinematicEditor.showChildren(layer);
                     // getTableView().getItems().addAll(index+1,layer.getChildren());
                 } else {
-                    layer.getLaf().setCollapsed(true);
+                    System.out.println("*********************************************************************");
                     System.out.println("Curent layer : " + layer.getName() + " was not collapsed. Hiding its children");
                     System.out.println("Removing from " + (index+1) + " to " + (layer.getChildren().size()+index));
                     cinematicEditor.hideChildren(layer);
@@ -60,20 +60,17 @@ public class ChildVisibilityCell extends TableCell<Layer,Boolean>{
  */
     @Override
     public void updateItem(Boolean item, boolean empty) {
-        if (empty) {
+        // if layer row is empty or layer does not have children, hide childVisibility button
+        if (empty || !getTableView().getItems().get(getTableRow().getIndex()).hasChildren()) {
             setGraphic(null);
-        }
-        if (!empty) {
+        } else {
             setGraphic(button);
-            // initialize
-            if (!item.booleanValue() == true) {
-                //  getTableView().getItems().addAll(getTableRow().getIndex() + 1, getTableView().getItems().get(getTableRow().getIndex()).getChildren());
+            // if layer is collapsed, set V button icon
+            if (item.booleanValue() == true) {
+                button.setText(">");
+            } else { // if layer is not collapsed set > button icon 
+                button.setText("v");
             }
-          //  System.out.println("Rendering");
-            // event handler
-
-
-
         }
     }
 

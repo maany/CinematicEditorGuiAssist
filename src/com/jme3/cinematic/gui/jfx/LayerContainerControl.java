@@ -179,6 +179,7 @@ public class LayerContainerControl extends AnchorPane{
      * @param layer 
      */
     public void addLayerView(int index,Layer layer){
+        System.out.println("Adding layer view in LayerContainer for : " + layer.getName());
         layerContainer.getItems().add(index, layer);
     }
     /**
@@ -188,6 +189,7 @@ public class LayerContainerControl extends AnchorPane{
     public void removeLayerView(int index)
     {
         layerContainer.getItems().remove(index);
+        System.out.println("Removed from Layer Container at index : " + index);
     }
    
     public ScrollBar getVScrollBar(){

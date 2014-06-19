@@ -270,14 +270,15 @@ public class TimelineControl extends VBox {
         eventStrip.setMinHeight(USE_PREF_SIZE);
         eventStrip.setMaxHeight(USE_PREF_SIZE);
         /*
-         * Add code for rendering events
+         * TODO Add code for rendering events
          */
-        eventStrip.getChildren().add(new Button("Layer" + index));
+        eventStrip.getChildren().add(new Button("Layer" + layer.getName()));
+        System.out.println("Adding eventStrip in Timeline for " + layer.getName());
         timelineScrollPaneVBox.getChildren().add(index, eventStrip);
     }
     public void removeLayerView(int index) {
-        AnchorPane eventStrip = (AnchorPane)timelineScrollPaneVBox.getChildren().remove(index);
-        //System.out.println("Removed : " + eventStrip);
+        timelineScrollPaneVBox.getChildren().remove(index);
+        System.out.println("Removed from timeline T index : " + index);
     }
     public DoubleProperty getDuration() {
         return duration;

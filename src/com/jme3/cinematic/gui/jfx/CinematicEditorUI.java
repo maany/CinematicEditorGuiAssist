@@ -50,9 +50,7 @@ public class CinematicEditorUI extends AnchorPane{
         }
         
     }
-    public void initTestRoot() {
-        
-    }
+
     
     public void initCinematicEditorUI() {
         timeline.initTimeline();
@@ -144,8 +142,13 @@ public class CinematicEditorUI extends AnchorPane{
      */
     public void showChildren(Layer parent) {
         int index = getIndex(parent) + 1;
+        System.out.println("Index of " + parent.getName() + " is " + (index-1) + " and its collapsed? " + parent.getLaf().isCollapsed());
+        List<Layer> visibleDescendants = parent.findAllVisibleDescendants();
         
-        for(Layer layer:parent.getVisibleDescendants()) {
+        System.out.println("Size of Visible Descendants for " + parent.getName() + " is " + visibleDescendants.size());
+        System.out.println("Visible decendants of " + parent.getName() + " are " + visibleDescendants);
+        for(Layer layer:visibleDescendants) {
+            
             addLayerView(index, layer);
             index++;
         }
@@ -155,9 +158,12 @@ public class CinematicEditorUI extends AnchorPane{
      * @param parent 
      */
     public void hideChildren(Layer parent){
-        
-        for (Layer descendant : parent.findAllVisibleDescendants()) {
+        int index = getIndex(parent) + 1;
+        List<Layer> visibleDescendants = parent.findAllVisibleDescendants();
+        parent.getLaf().setCollapsed(true);
+        for (Layer descendant : visibleDescendants) {
             removeLayerView(getIndex(descendant));
+            index++;
         }
     }
     /**
@@ -169,7 +175,7 @@ public class CinematicEditorUI extends AnchorPane{
         this.root = root;
         this.addLayerView(index,root);
         if (!root.getLaf().isCollapsed()) {
-            for (Layer child : root.getChildren()) {
+            for (Layer child : root.findAllVisibleDescendants()) {
                 index++;
                 addLayerView(index,child);
             }

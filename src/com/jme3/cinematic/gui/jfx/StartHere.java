@@ -57,17 +57,19 @@ public class StartHere extends Application{
         Layer grandChild = new Layer("GrandChild",child);
         Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
         
-        System.out.println("Root : " + root.getLaf().isCollapsed());
+      /*  System.out.println("Root : " + root.getLaf().isCollapsed());
         System.out.println("Child : " + child.getLaf().isCollapsed());
         System.out.println("Sibling : " + sibling.getLaf().isCollapsed());
         System.out.println("GC : " + grandChild.getLaf().isCollapsed());
         System.out.println("GCC : " + grandChildCousin.getLaf().isCollapsed());
-        
-        List<Layer> visibleDescendants = root.findAllVisibleDescendants();
+        sibling.getLaf().setCollapsed(false);
+       List<Layer> visibleDescendants = sibling.findAllVisibleDescendants();
         System.out.println("Visible Descendants :" + visibleDescendants.size());
         for(Layer visible:visibleDescendants) 
         System.out.println("VisibleList : " + visible.getName());
-        
+        System.out.println("AGAIN : " + sibling.findAllVisibleDescendants());
+        System.out.println("AGAIN : " + sibling.findAllVisibleDescendants());
+        */
        /* List<Layer> descendants = root.getDescendants();
         System.out.println("Descendants : "+ descendants.size());
         for(Layer descendant:descendants)

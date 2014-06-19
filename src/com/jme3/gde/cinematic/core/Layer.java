@@ -121,7 +121,7 @@ public class Layer {
     }
       
     public List<Layer> findAllVisibleDescendants () {
-       // visibleDescendants = new ArrayList<>();
+        visibleDescendants = new ArrayList<>();
         if(this.hasChildren() && !this.getLaf().isCollapsed()) {
             System.out.println(this.getName() + " has children and is not collapsed");
             int index=0;
@@ -145,10 +145,10 @@ public class Layer {
                 } */
             }
         } else if(this.hasChildren() && this.getLaf().isCollapsed()){
-            System.out.println(" has children but is collapsed. Returning  empty Array List as Visible descendants to " + this.getParent());
-            visibleDescendants = new ArrayList<>();
+            System.out.println( this.getName()+" has children but is collapsed. Returning  empty Array List as Visible descendants to " + this.getParent());
+            visibleDescendants = new ArrayList<>(); //just a precaution;
         }
-        return visibleDescendants;
+        return getVisibleDescendants();
     }
     @Override 
     public String toString() {
