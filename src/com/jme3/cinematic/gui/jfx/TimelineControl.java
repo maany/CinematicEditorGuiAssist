@@ -8,6 +8,7 @@ import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.DurationChangeListener;
 import com.jme3.gde.cinematic.core.Event;
 import com.jme3.gde.cinematic.core.Layer;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -19,7 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -55,11 +56,13 @@ public class TimelineControl extends VBox implements DurationChangeListener{
     @FXML
     private AnchorPane anchor;
     @FXML
-    private TextField durationInput;
+    private Label durationInput;
     @FXML
     private StackPane timebarTimeSliderStackPane;
     @FXML
     private Group timebarTimesliderSuperGroup;
+    @FXML
+    private Label currentTimeLabel;
     private DoubleProperty currentTime = new SimpleDoubleProperty(0);
     private DoubleProperty magnification = new SimpleDoubleProperty();
     private DoubleProperty maxMagnification = new SimpleDoubleProperty();
@@ -192,7 +195,27 @@ public class TimelineControl extends VBox implements DurationChangeListener{
                     timeslider.setLayoutX(0);
             }
         });
+        /*
+         * bind currentTimeLabelText 
+         */
+        StringBinding currentTimeLabelTextBinding = new StringBinding() {
+            {
+                super.bind(currentTime);
+            }
 
+            @Override
+            protected String computeValue() {
+
+                Double val = currentTime.doubleValue();
+                /*
+                 * rounding to 2 decimal places (as there are 2 zeroes in 100)
+                 */
+                val = (double) Math.round(val * 10) / 10;
+                return val.toString();
+            }
+        };
+        currentTimeLabel.textProperty().bind(currentTimeLabelTextBinding);
+        
         enableTimesliderDrag();
         
         
@@ -286,26 +309,72 @@ public class TimelineControl extends VBox implements DurationChangeListener{
             }
         });
         
-        durationInput.setOnAction(new EventHandler<ActionEvent>() {
+        durationInput.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
-            public void handle(ActionEvent t) {
-                try {
-                    
-                    CinematicEditorManager.getInstance().getCurrentClip().setDuration(new Double(durationInput.getText()));
-                    /*
-                     * DurationChangeListener will change the value of duration (DoubleProperty) of this TimelineControl
-                     */
-                    System.out.println("duration : " + duration.getValue());
-                    timebar.setMax(duration.get());
-                    
-                } catch(Exception ex)
-                {
-                    System.out.println("invalid duration"  + duration.getValue());
-                    durationInput.setText(duration.getValue().toString());
-                    //TODO see jme convention
-                    ex.printStackTrace();
-                }
+            public void handle(MouseEvent t) {
+                final Node tempGraphic = durationInput.getGraphic();
+                final TextField durationInputTextField = new TextField(null);
+                durationInputTextField.setPrefWidth(35);
+                durationInput.setGraphic(durationInputTextField);
+                durationInputTextField.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent t) {
+                        try {
+                            CinematicEditorManager.getInstance().getCurrentClip().setDuration(new Double(durationInputTextField.getText()));
+                            /*
+                             * DurationChangeListener will change the value of duration (DoubleProperty) of this TimelineControl
+                             */
+                            System.out.println("duration : " + duration.getValue());
+                            timebar.setMax(duration.get());
+                            durationInput.setText(duration.getValue().toString());
+                        } catch (Exception ex) {
+                            System.out.println("invalid duration entered in durationInput");
+                            durationInput.setText(duration.getValue().toString());
+                        } finally {
+                            durationInput.setGraphic(tempGraphic);
+                        }
+                        
+                    }
+                });
+            }
+        });
+
+            
+        /*
+         * when user clicks on currentTimeLabel it converts into a text field
+         * allowing to enter the time to go-to.
+         */
+        currentTimeLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent t) {
+                final TextField currentTimeTextField = new TextField(null);
+                final Node graphic = currentTimeLabel.getGraphic();
+                System.out.println("Graphic is instance of Label : " + (graphic instanceof Label));
+                currentTimeTextField.setPrefWidth(currentTimeLabel.getMinWidth());
+               // currentTimeLabel.textProperty().set(null);
+                currentTimeLabel.setGraphic(currentTimeTextField);
+                
+                currentTimeTextField.setOnAction(new EventHandler<ActionEvent>() {
+
+                    @Override
+                    public void handle(ActionEvent t) {
+                        try {
+                            
+                            Double val = new Double(currentTimeTextField.getText());
+                            timebar.setValue(val);
+                            
+                        }catch(Exception ex) {
+                            //TODO see jme convention
+                            ex.printStackTrace();
+                            System.out.println("Please enter a valid number value for current time");
+                        }finally {
+                            currentTimeLabel.setGraphic(graphic);
+                        }
+                    }
+                });
             }
         });
     }
