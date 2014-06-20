@@ -5,6 +5,7 @@
 package com.jme3.cinematic.gui.jfx;
 
 import com.jme3.gde.cinematic.core.Layer;
+import com.jme3.gde.cinematic.gui.GuiManager;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
@@ -77,9 +78,17 @@ public class LayerNameCell extends TableCell<Layer, String> {
                 setGraphic(textField);
 
             } else {
-
-                setText(getString());
-
+                /*
+                 * Set indentation of children
+                 */
+                String indentation = GuiManager.INDENTATION;
+                Layer layer = getTableView().getItems().get(getTableRow().getIndex());
+                for(int i=0;i<layer.getDepth();i++)
+                {
+                    indentation += indentation;
+                }
+                setText(indentation + getString());
+                
                 setGraphic(null);
 
             }

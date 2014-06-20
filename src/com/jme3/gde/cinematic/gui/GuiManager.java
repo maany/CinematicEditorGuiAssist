@@ -27,6 +27,7 @@ public class GuiManager {
     public static final int GREAT_GRAND_CHILD_Z_VALUE = 4;
     public static final Color DEFAULT_LAYER_COLOR = Color.GRAY;
     public static final boolean DEFAULT_LAYER_COLLAPSED_STATE = true;
+    public static final String INDENTATION = "  ";
     private static GuiManager instance = null;
     
     private GuiManager(){}
