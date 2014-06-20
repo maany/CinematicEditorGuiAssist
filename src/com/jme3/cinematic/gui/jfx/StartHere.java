@@ -6,6 +6,7 @@ package com.jme3.cinematic.gui.jfx;
 
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.CinematicClip;
+import com.jme3.gde.cinematic.core.Event;
 import com.jme3.gde.cinematic.core.Layer;
 import java.util.List;
 import javafx.application.Application;
@@ -57,6 +58,15 @@ public class StartHere extends Application{
         Layer sibling = new Layer("Sibling",root);
         Layer grandChild = new Layer("GrandChild",child);
         Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
+        Event childEvent = new Event();
+        childEvent.setName("Child-E");
+        childEvent.setDuration(5);
+        childEvent.setLayer(child);
+        childEvent.setStartPoint(5);
+        child.getEvents().add(childEvent);
+        
+        Event sibEvent = new Event("sibEv", sibling, 21, 8);
+        
         
       /*  System.out.println("Root : " + root.getLaf().isCollapsed());
         System.out.println("Child : " + child.getLaf().isCollapsed());

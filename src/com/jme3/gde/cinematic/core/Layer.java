@@ -4,6 +4,7 @@
  */
 package com.jme3.gde.cinematic.core;
 
+import com.jme3.cinematic.gui.jfx.EventStrip;
 import com.jme3.gde.cinematic.gui.GuiManager;
 import com.jme3.gde.cinematic.gui.LayerLAF;
 import java.awt.Color;
@@ -27,7 +28,7 @@ public class Layer {
     private List<Integer> index;
     private boolean showChildren = false;
     private boolean tempLeaf = false;
-  
+    
     /**
      * Use for creating a Child
      * @param name
@@ -41,6 +42,7 @@ public class Layer {
         children = new ArrayList<>();
         descendants = new ArrayList<>();
         visibleDescendants = new ArrayList<>();
+        
         events = new ArrayList<>();
         laf = new LayerLAF(GuiManager.DEFAULT_LAYER_COLOR,GuiManager.DEFAULT_LAYER_COLLAPSED_STATE,this);
         
@@ -125,13 +127,13 @@ public class Layer {
     public List<Layer> findAllVisibleDescendants () {
         visibleDescendants = new ArrayList<>();
         if(this.hasChildren() && !this.getLaf().isCollapsed()) {
-            System.out.println(this.getName() + " has children and is not collapsed");
+           // System.out.println(this.getName() + " has children and is not collapsed");
             int index=0;
             for(Layer child:this.getChildren())
             {
                 index++;
-                System.out.println("Child " +index + " of " + this.getName() + " is " + child.getName() );
-                System.out.println("Adding " + child.getName() + " as a Visible Descendant of " + this.getName());
+             //   System.out.println("Child " +index + " of " + this.getName() + " is " + child.getName() );
+              //  System.out.println("Adding " + child.getName() + " as a Visible Descendant of " + this.getName());
                 visibleDescendants.add(child);
                 visibleDescendants.addAll(child.findAllVisibleDescendants());
                 
@@ -147,7 +149,7 @@ public class Layer {
                 } */
             }
         } else if(this.hasChildren() && this.getLaf().isCollapsed()){
-            System.out.println( this.getName()+" has children but is collapsed. Returning  empty Array List as Visible descendants to " + this.getParent());
+           // System.out.println( this.getName()+" has children but is collapsed. Returning  empty Array List as Visible descendants to " + this.getParent());
             visibleDescendants = new ArrayList<>(); //just a precaution;
         }
         return getVisibleDescendants();

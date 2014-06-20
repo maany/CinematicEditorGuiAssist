@@ -6,6 +6,7 @@ package com.jme3.cinematic.gui.jfx;
 
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.DurationChangeListener;
+import com.jme3.gde.cinematic.core.Event;
 import com.jme3.gde.cinematic.core.Layer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -25,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -81,8 +83,8 @@ public class TimelineControl extends VBox implements DurationChangeListener{
     }
 
     public void initTimeline() {
-        initListeners();
         initView();
+        initListeners();
         initActions();
     }
     /**
@@ -93,8 +95,46 @@ public class TimelineControl extends VBox implements DurationChangeListener{
         duration.setValue(CinematicEditorManager.getInstance().getCurrentClip().getDuration());
     }
     private void initListeners() {
-
+        /*
+         * DurationChangeListener
+         */
         CinematicEditorManager.getInstance().getCurrentClip().getDurationChangeListeners().add(this);
+        /*
+         * Magnification bindings and change listener
+         */
+        maxMagnification.bindBidirectional(zoom.maxProperty());
+        magnification.bindBidirectional(zoom.valueProperty());
+        magnification.addListener(new ChangeListener<Number>() {
+        //TODO Zoom Issues . see notebook
+            @Override
+            public void changed(ObservableValue<? extends Number> ov, Number t, Number mag) {
+                if (mag.doubleValue() > 0) {
+                    // change current width
+                    double currentWidth = mag.doubleValue() * timelineScrollPane.getWidth();
+                    timelineScrollPaneVBox.setPrefWidth(currentWidth);
+                    timebar.setPrefWidth(currentWidth);
+                    currentTime.setValue(timebar.getValue());
+                    System.out.println("Current Width : " + currentWidth);
+                    // change ticks
+                    Integer majorTickUnit = new Integer((int) (zoom.getMax() + zoom.getMin() - mag.floatValue()));
+                    timebar.setMajorTickUnit(majorTickUnit);
+                    //double timesliderPos = currentWidth*timebar.getValue()/majorTickUnit;
+                    //timeslider.setTranslateX(timesliderPos);
+                    
+                    int durationNearestSecond = (int) duration.doubleValue() - (((int) duration.doubleValue()) % ((int) zoom.getValue()));
+                    timebar.setMinorTickCount(100/ majorTickUnit);
+                   // System.out.println("Majot Tick Unit : " + majorTickUnit + " Minor Tick Count "+ timebar.getMinorTickCount() + "Position : " + anchor.getTranslateX());
+                
+                    /*
+                     * Resize and update X positions of all the eventControls
+                     */
+                    
+                }
+            }
+        });
+        /*
+         *  timelineScrollPane horizontal scroll listener 
+         */
         timelineScrollPane.hvalueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
@@ -105,14 +145,19 @@ public class TimelineControl extends VBox implements DurationChangeListener{
                 System.out.println("Positions : " + timebarTimesliderSuperGroup.getTranslateX());
             }
         });
-
+        /*
+         *  timebar value change listener. i.e update current time, which invokes the change 
+         *  listener on current time to update the timeslider X position
+         */
         timebar.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
                 currentTime.setValue(t1);
             }
         });
-
+        /*
+         * updates the timeslider's X position when currentTime is changed
+         */
         currentTime.addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
@@ -203,34 +248,7 @@ public class TimelineControl extends VBox implements DurationChangeListener{
         //timebarTimeSliderStackPane.getChildren().add(timebarClip);
         timebarTimeSliderStackPane.setClip(timebarClip);
         //timebarTimesliderSuperGroup
-        maxMagnification.bindBidirectional(zoom.maxProperty());
-        magnification.bindBidirectional(zoom.valueProperty());
-        magnification.addListener(new ChangeListener<Number>() {
-        //TODO Zoom Issues . see notebook
-            @Override
-            public void changed(ObservableValue<? extends Number> ov, Number t, Number mag) {
-                if (mag.doubleValue() > 0) {
-                    // change current width
-                    double currentWidth = mag.doubleValue() * timelineScrollPane.getWidth();
-                    timelineScrollPaneVBox.setPrefWidth(currentWidth);
-                    timebar.setPrefWidth(currentWidth);
-                    currentTime.setValue(timebar.getValue());
-                    System.out.println("Current Width : " + currentWidth);
-                    // change ticks
-                    Integer majorTickUnit = new Integer((int) (zoom.getMax() + zoom.getMin() - mag.floatValue()));
-                    timebar.setMajorTickUnit(majorTickUnit);
-                    //double timesliderPos = currentWidth*timebar.getValue()/majorTickUnit;
-                    //timeslider.setTranslateX(timesliderPos);
-                    
-                    int durationNearestSecond = (int) duration.doubleValue() - (((int) duration.doubleValue()) % ((int) zoom.getValue()));
-                    timebar.setMinorTickCount(100/ majorTickUnit);
-                   // System.out.println("Majot Tick Unit : " + majorTickUnit + " Minor Tick Count "+ timebar.getMinorTickCount() + "Position : " + anchor.getTranslateX());
-                }
-            }
-        });
-
-        
-    }
+        }
 
     private void initActions() {
         timebar.snapToTicksProperty().set(false);
@@ -281,19 +299,29 @@ public class TimelineControl extends VBox implements DurationChangeListener{
      * @param layer 
      */
     public void addLayerView(int index, Layer layer) {
-        AnchorPane eventStrip = new AnchorPane();
+        EventStrip eventStrip = new EventStrip();
+        eventStrip.setTimeline(this);
+        eventStrip.setLayer(layer);
         eventStrip.setPrefHeight(CinematicEditorUI.ROW_HEIGHT);
         eventStrip.setMinHeight(USE_PREF_SIZE);
         eventStrip.setMaxHeight(USE_PREF_SIZE);
         /*
          * TODO Add code for rendering events
          */
-        eventStrip.getChildren().add(new Button("Layer" + layer.getName()));
+        for(Event event:layer.getEvents()) {
+            EventControl eventControl = new EventControl(event);
+            eventStrip.getChildren().add(eventControl);
+            System.out.println("Event "+ event.getName()
+                    + "Start Pos : " + event.getStartPoint()
+                    + "duration : " + event.getDuration());
+            eventControl.render();
+        }
         System.out.println("Adding eventStrip in Timeline for " + layer.getName());
         timelineScrollPaneVBox.getChildren().add(index, eventStrip);
     }
     public void removeLayerView(int index) {
         timelineScrollPaneVBox.getChildren().remove(index);
+        
         System.out.println("Removed from timeline T index : " + index);
     }
     public DoubleProperty getDuration() {

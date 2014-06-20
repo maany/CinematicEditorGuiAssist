@@ -17,7 +17,8 @@ import javafx.scene.layout.AnchorPane;
  */
 public class EventStrip extends AnchorPane{
     private Layer layer;
-    private List<EventControl> eventControls;
+    private TimelineControl timeline;
+    
     public EventStrip(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("event_strip.fxml"));
         loader.setRoot(this);
@@ -28,10 +29,14 @@ public class EventStrip extends AnchorPane{
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+        
         setPrefHeight(GuiManager.LAYER_HEIGTH);
-        eventControls = new ArrayList<>();
+        setHeight(USE_PREF_SIZE);
+        setMinHeight(USE_PREF_SIZE);
+        setMaxHeight(USE_PREF_SIZE);
         
     }
+    
     public EventStrip(Layer layer){
         this();
         this.layer = layer;
@@ -48,12 +53,14 @@ public class EventStrip extends AnchorPane{
         this.layer = layer;
     }
 
-    public List<EventControl> getEventControls() {
-        return eventControls;
+
+
+    public TimelineControl getTimeline() {
+        return timeline;
     }
 
-    public void setEventControls(List<EventControl> eventControls) {
-        this.eventControls = eventControls;
+    public void setTimeline(TimelineControl timeline) {
+        this.timeline = timeline;
     }
     
 }

@@ -4,7 +4,7 @@
  */
 package com.jme3.gde.cinematic.core;
 
-import javafx.scene.control.Button;
+import com.jme3.cinematic.gui.jfx.EventControl;
 
 /**
  * 
@@ -15,15 +15,24 @@ public class Event {
     private String name;
     private double duration;
     private double startPoint;
-
+    
     public Event() {
         
     }
+    /**
+     * Creates an event, initialized the following parameterss and sets parent-child relation b/w layer and event
+     * @param name
+     * @param layer
+     * @param startPoint
+     * @param duration 
+     */
     public Event(String name, Layer layer,double startPoint,double duration ) {
         this.layer = layer;
         this.name = name;
         this.duration = duration;
         this.startPoint = startPoint;
+        if(!layer.getEvents().contains(this))
+        layer.getEvents().add(this);
     }
     
     public void offset(double offset) {
@@ -63,5 +72,8 @@ public class Event {
     public void setStartPoint(double startPoint) {
         this.startPoint = startPoint;
     }
+
+    
+    
     
 }
