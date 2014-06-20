@@ -28,6 +28,7 @@ public class GuiManager {
     public static final Color DEFAULT_LAYER_COLOR = Color.GRAY;
     public static final boolean DEFAULT_LAYER_COLLAPSED_STATE = true;
     public static final String INDENTATION = "  ";
+    public static final double DEFAULT_DURATION = 30;
     private static GuiManager instance = null;
     
     private GuiManager(){}

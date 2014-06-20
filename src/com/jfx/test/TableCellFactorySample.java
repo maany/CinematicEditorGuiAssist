@@ -1,4 +1,4 @@
-package com.jme3.cinematic.gui.jfx;
+package com.jfx.test;
 import javafx.application.Application;
 
 import javafx.scene.Group;

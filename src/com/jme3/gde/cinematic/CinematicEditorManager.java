@@ -5,6 +5,7 @@
 package com.jme3.gde.cinematic;
 
 import com.jme3.gde.cinematic.core.CinematicClip;
+import com.jme3.gde.cinematic.core.Layer;
 
 /**
  *
@@ -23,9 +24,14 @@ public class CinematicEditorManager {
         return instance;
     }
     
-    public CinematicClip getCurrentClip() {
+public CinematicClip getCurrentClip() {
+        if(currentClip==null) {
+            Layer root = new Layer("Root",null);
+            currentClip = new CinematicClip("Untitled", root);
+        }
         return currentClip;
     }
+
 
     public void setCurrentClip(CinematicClip currentClip) {
         this.currentClip = currentClip;
