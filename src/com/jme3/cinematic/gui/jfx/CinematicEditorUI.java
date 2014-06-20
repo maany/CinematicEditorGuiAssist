@@ -50,7 +50,9 @@ public class CinematicEditorUI extends AnchorPane{
     
     public void initCinematicEditorUI() {
         timeline.initTimeline();
+        timeline.setCinematicEditor(this);
         layerContainer.initLayerContainer();
+        layerContainer.setCinematicEditor(this);
         initControls();
         syncHeight();
         syncVerticalScrolling();
@@ -105,18 +107,25 @@ public class CinematicEditorUI extends AnchorPane{
     }
 
     /**
-     * Creates a new layer, attached it to root and renders the layer view.
+     * Creates a new layer, attached it to root and renders the layer view if the parent is not collapsed.
      * @param layer 
      */
     public void addNewLayer(Layer layer){
-    
+        Layer parent = layer.getParent();
+        if(!parent.getLaf().isCollapsed()) {
+            int index = getIndex(parent);
+            index+= parent.getVisibleDescendants().size();
+            index++;
+            addLayerView(index, layer);
+        }
     }
     /**
      * deletes the layer and removes layer view + descendant layer view.
+     * Note : root cannot be removed
      * @param index
      * @param layer 
      */
-    public void removeLayer(int index, Layer layer) {
+    public void removeLayer(Layer layer) {
         layer.getParent().getChildren().remove(layer);
         removeLayerView(getIndex(layer));
         hideChildren(layer);
@@ -209,7 +218,7 @@ public class CinematicEditorUI extends AnchorPane{
      * @param layer
      * @return 
      */
-    private int getIndex(Layer layer) {
+    public int getIndex(Layer layer) {
         int index =-1;
             for(int i=0;i<layerContainerTableView.getItems().size();i++)
             {
@@ -233,6 +242,14 @@ public class CinematicEditorUI extends AnchorPane{
 
     public void setLayerContainer(LayerContainerControl layerContainer) {
         this.layerContainer = layerContainer;
+    }
+
+    public TimelineControl getTimeline() {
+        return timeline;
+    }
+
+    public void setTimeline(TimelineControl timeline) {
+        this.timeline = timeline;
     }
     
     

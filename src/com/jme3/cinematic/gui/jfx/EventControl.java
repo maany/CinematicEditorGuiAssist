@@ -7,9 +7,12 @@ package com.jme3.cinematic.gui.jfx;
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.DurationChangeListener;
 import com.jme3.gde.cinematic.core.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * Provides the graphical representation of {@link com.jme3.gde.cinematic.core.Event}. 
@@ -30,6 +33,7 @@ public class EventControl extends Button implements DurationChangeListener{
         this.setLayoutX(0);
         this.setLayoutY(0);
         CinematicEditorManager.getInstance().getCurrentClip().getDurationChangeListeners().add(this);
+        initActions();
         
     }
     /**
@@ -72,6 +76,19 @@ public class EventControl extends Button implements DurationChangeListener{
         setTranslateX(startPoint);
     }
 
+    private void initActions() {
+        setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+            @Override
+            public void handle(KeyEvent t) {
+                if(t.getCode()== KeyCode.DELETE) {
+                    EventStrip eventStrip = (EventStrip)getParent();
+                    eventStrip.getTimeline().removeEvent(getEvent());
+                }
+                    
+            }
+        });
+    }
     public Event getEvent() {
         return event;
     }

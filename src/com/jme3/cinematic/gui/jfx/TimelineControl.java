@@ -19,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -65,6 +66,7 @@ public class TimelineControl extends VBox implements DurationChangeListener{
     private DoubleProperty duration = new SimpleDoubleProperty();
     private DoubleProperty frameRate = new SimpleDoubleProperty();
     private DoubleProperty frameWidth = new SimpleDoubleProperty();
+    private CinematicEditorUI cinematicEditor ;
     private double endAdjustment = 8; // timebar extra width due to circular thumb of slider
     private double startAdjustment = 6.5;
 /**
@@ -93,6 +95,8 @@ public class TimelineControl extends VBox implements DurationChangeListener{
     @Override
     public void durationChanged() {
         duration.setValue(CinematicEditorManager.getInstance().getCurrentClip().getDuration());
+        double timesliderPos = currentTime.doubleValue()*timebar.getPrefWidth()/duration.doubleValue();
+        timeslider.setLayoutX(startAdjustment + timesliderPos - 3 );
     }
     private void initListeners() {
         /*
@@ -109,22 +113,25 @@ public class TimelineControl extends VBox implements DurationChangeListener{
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number mag) {
                 if (mag.doubleValue() > 0) {
+                    
                     // change current width
                     double currentWidth = mag.doubleValue() * timelineScrollPane.getWidth();
                     timelineScrollPaneVBox.setPrefWidth(currentWidth);
                     timebar.setPrefWidth(currentWidth);
                     currentTime.setValue(timebar.getValue());
                     System.out.println("Current Width : " + currentWidth);
+                    
                     //sync timeslider
                     double timesliderPos = currentWidth*timebar.getValue()/timebar.getMax();
                     timesliderPos+=startAdjustment-3;
                     timeslider.setLayoutX(timesliderPos);
+                    
                     // change ticks
                     Integer majorTickUnit = new Integer((int) (zoom.getMax() + zoom.getMin() - mag.floatValue()));
                     timebar.setMajorTickUnit(majorTickUnit);
                     int durationNearestSecond = (int) duration.doubleValue() - (((int) duration.doubleValue()) % ((int) zoom.getValue()));
                     timebar.setMinorTickCount(100/ majorTickUnit);
-                   // System.out.println("Majot Tick Unit : " + majorTickUnit + " Minor Tick Count "+ timebar.getMinorTickCount() + "Position : " + anchor.getTranslateX());
+                    // System.out.println("Majot Tick Unit : " + majorTickUnit + " Minor Tick Count "+ timebar.getMinorTickCount() + "Position : " + anchor.getTranslateX());
                 
                     /*
                      * Resize and update X positions of all the eventControls
@@ -318,21 +325,74 @@ public class TimelineControl extends VBox implements DurationChangeListener{
          * TODO Add code for rendering events
          */
         for(Event event:layer.getEvents()) {
-            EventControl eventControl = new EventControl(event);
-            eventStrip.getChildren().add(eventControl);
-            System.out.println("Event "+ event.getName()
-                    + "Start Pos : " + event.getStartPoint()
-                    + "duration : " + event.getDuration());
-            eventControl.render(magnification.doubleValue());
-            eventControl.refactorDisplay(magnification.doubleValue());
+            addEventControl(event,eventStrip);
         }
         System.out.println("Adding eventStrip in Timeline for " + layer.getName());
         timelineScrollPaneVBox.getChildren().add(index, eventStrip);
     }
     public void removeLayerView(int index) {
         timelineScrollPaneVBox.getChildren().remove(index);
-        
         System.out.println("Removed from timeline T index : " + index);
+    }
+    public void removeLayer(Layer layer){
+        int index = cinematicEditor.getIndex(layer);
+        removeLayerView(index);
+        layer.getParent().getChildren().remove(layer);
+        
+    }
+    
+    private void addEventControl(Event event,EventStrip eventStrip){
+        EventControl eventControl = new EventControl(event);
+            eventStrip.getChildren().add(eventControl);
+            System.out.println("Event "+ event.getName()
+                    + "Start Pos : " + event.getStartPoint()
+                    + "duration : " + event.getDuration());
+            eventControl.render(magnification.doubleValue());
+            eventControl.refactorDisplay(magnification.doubleValue());
+    }
+    /**
+     * Creates an Event, attaches it to the layer. It then finds and updates the layer view and eventstrip by implicitly
+     * calling {@link #addEventControl(com.jme3.gde.cinematic.core.Event) }
+     * @param event 
+     * @param layer
+     */
+    public void addEvent(Event event, Layer layer) {
+        if(!layer.getEvents().contains(event))
+            layer.getEvents().add(event);
+        int index = cinematicEditor.getIndex(layer);
+        EventStrip eventStrip = null;
+        try {
+            eventStrip = (EventStrip) timelineScrollPaneVBox.getChildren().get(index);
+        } catch (Exception ex) {
+            eventStrip = new EventStrip();
+            eventStrip.setTimeline(this);
+            eventStrip.setLayer(layer);
+            eventStrip.setPrefHeight(CinematicEditorUI.ROW_HEIGHT);
+            eventStrip.setMinHeight(USE_PREF_SIZE);
+            eventStrip.setMaxHeight(USE_PREF_SIZE);
+        } finally {
+            addEventControl(event, eventStrip);
+        }
+    }
+    /**
+     * removes the event from the UI and data structure
+     * @param event 
+     */
+    public void removeEvent(Event event) {
+        int index = cinematicEditor.getIndex(event.getLayer());
+        EventStrip eventStrip = (EventStrip)timelineScrollPaneVBox.getChildren().get(index);
+        for(Node control: eventStrip.getChildren())
+        {
+            EventControl eventControl = (EventControl) control;
+            if(eventControl.getEvent()==event)
+            {
+                eventStrip.getChildren().remove(eventControl);
+                event.getLayer().getChildren().remove(event);
+                break;
+            }
+        }
+        
+        
     }
     public DoubleProperty getDuration() {
         return duration;
@@ -364,6 +424,14 @@ public class TimelineControl extends VBox implements DurationChangeListener{
 
     public void setMagnification(DoubleProperty magnification) {
         this.magnification = magnification;
+    }
+
+    public CinematicEditorUI getCinematicEditor() {
+        return cinematicEditor;
+    }
+
+    public void setCinematicEditor(CinematicEditorUI cinematicEditor) {
+        this.cinematicEditor = cinematicEditor;
     }
     
     

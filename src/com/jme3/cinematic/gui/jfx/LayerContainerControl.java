@@ -6,7 +6,10 @@ package com.jme3.cinematic.gui.jfx;
 
 import com.jme3.gde.cinematic.CinematicEditorManager;
 import com.jme3.gde.cinematic.core.CinematicClip;
+import com.jme3.gde.cinematic.core.Event;
 import com.jme3.gde.cinematic.core.Layer;
+import java.util.Scanner;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -14,8 +17,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -32,6 +38,14 @@ import javafx.util.Callback;
 public class LayerContainerControl extends AnchorPane{
     @FXML
     private TableView layerContainer ;
+    @FXML
+    private Button addLayerButton; 
+    @FXML 
+    private Button removeLayerButton;
+    @FXML
+    private Button addEventButton;
+    @FXML
+    private Button removeEventButton;
     private Layer root;//TODO remove, only testing
     private TableColumn<Layer,Boolean> childVisibility,enabled;
     private TableColumn<Layer,String> layerName;
@@ -144,6 +158,54 @@ public class LayerContainerControl extends AnchorPane{
         layerContainer.getColumns().add(1,childVisibility);
         //initTestRoot();
        // seedTable();
+        initActions();
+    }
+    /**
+     * initialize the finctions of toolbar buttons/controls in the layerContainer
+     */
+    private void initActions() {
+        addLayerButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent t) {
+                Layer root = CinematicEditorManager.getInstance().getCurrentClip().getRoot();
+                Layer child = new Layer("New Child",root);
+                cinematicEditor.addNewLayer(child);
+            }
+        });
+        removeLayerButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent t) {
+                ObservableList selectedItems = layerContainer.getSelectionModel().getSelectedItems();
+                for(Object item:selectedItems)
+                {
+                    Layer layer = (Layer) item;
+                    if(layer.getDepth()<2)
+                        cinematicEditor.removeLayer(layer);
+                    else
+                        System.out.println("Cannot remove : " + layer.getName()+ " as it is a property");
+                }
+            }
+        });
+        addEventButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent t) {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("*******************************************************\n"
+                                 + "Enter start time : ");
+                double start = sc.nextDouble();
+                System.out.println("Enter duration of event : ");
+                double duration = sc.nextDouble();
+                System.out.println("Enter Event Name : " );
+                String name = sc.next();
+                System.out.println("*******************************************************");
+                Layer layer = (Layer)layerContainer.getSelectionModel().getSelectedItem();
+                Event event = new Event(name, layer, start, duration);
+                cinematicEditor.getTimeline().addEvent(event, layer);
+            }
+        });
     }
     private void initTestRoot() {
         CinematicClip clip = new CinematicClip("MyClip");

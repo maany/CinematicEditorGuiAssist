@@ -38,7 +38,6 @@ public class StartHere extends Application{
         stage.setScene(scene);
         stage.show();
         initRoot();
-        cinematicEditor.getLayerContainer().setCinematicEditor(cinematicEditor);
         cinematicEditor.initCinematicEditorUI();
         cinematicEditor.initView(root);
         
