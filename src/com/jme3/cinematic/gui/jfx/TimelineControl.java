@@ -115,12 +115,13 @@ public class TimelineControl extends VBox implements DurationChangeListener{
                     timebar.setPrefWidth(currentWidth);
                     currentTime.setValue(timebar.getValue());
                     System.out.println("Current Width : " + currentWidth);
+                    //sync timeslider
+                    double timesliderPos = currentWidth*timebar.getValue()/timebar.getMax();
+                    timesliderPos+=startAdjustment-3;
+                    timeslider.setLayoutX(timesliderPos);
                     // change ticks
                     Integer majorTickUnit = new Integer((int) (zoom.getMax() + zoom.getMin() - mag.floatValue()));
                     timebar.setMajorTickUnit(majorTickUnit);
-                    //double timesliderPos = currentWidth*timebar.getValue()/majorTickUnit;
-                    //timeslider.setTranslateX(timesliderPos);
-                    
                     int durationNearestSecond = (int) duration.doubleValue() - (((int) duration.doubleValue()) % ((int) zoom.getValue()));
                     timebar.setMinorTickCount(100/ majorTickUnit);
                    // System.out.println("Majot Tick Unit : " + majorTickUnit + " Minor Tick Count "+ timebar.getMinorTickCount() + "Position : " + anchor.getTranslateX());
