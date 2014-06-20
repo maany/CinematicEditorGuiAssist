@@ -22,6 +22,7 @@ public class Layer {
     private Layer parent; // for child to parent link
     private List<Layer> descendants;
     private List<Layer> visibleDescendants;
+    private List<Event> events;
     private LayerLAF laf; // look and feel
     private List<Integer> index;
     private boolean showChildren = false;
@@ -40,6 +41,7 @@ public class Layer {
         children = new ArrayList<>();
         descendants = new ArrayList<>();
         visibleDescendants = new ArrayList<>();
+        events = new ArrayList<>();
         laf = new LayerLAF(GuiManager.DEFAULT_LAYER_COLOR,GuiManager.DEFAULT_LAYER_COLLAPSED_STATE,this);
         
         if(parent!=null)
@@ -212,6 +214,14 @@ public class Layer {
 
     public void setVisibleDescendants(List<Layer> visibleDescendants) {
         this.visibleDescendants = visibleDescendants;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
     
    

@@ -7,12 +7,8 @@ package com.jme3.cinematic.gui.jfx;
 
 
 
-import com.jme3.gde.cinematic.CinematicEditorManager;
-import com.jme3.gde.cinematic.core.CinematicClip;
 import com.jme3.gde.cinematic.core.Layer;
 import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollBar;

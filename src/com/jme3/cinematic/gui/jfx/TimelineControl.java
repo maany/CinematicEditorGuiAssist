@@ -4,6 +4,8 @@
  */
 package com.jme3.cinematic.gui.jfx;
 
+import com.jme3.gde.cinematic.CinematicEditorManager;
+import com.jme3.gde.cinematic.core.DurationChangeListener;
 import com.jme3.gde.cinematic.core.Layer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -15,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -32,7 +33,7 @@ import javafx.scene.shape.Rectangle;
  *
  * @author MAYANK
  */
-public class TimelineControl extends VBox {
+public class TimelineControl extends VBox implements DurationChangeListener{
 
     @FXML
     private Group timebarTimesliderGroup;
@@ -83,6 +84,10 @@ public class TimelineControl extends VBox {
         initListeners();
         initActions();
     }
+    @Override
+    public void durationChanged() {
+        duration.setValue(CinematicEditorManager.getInstance().getCurrentClip().getDuration());
+    }
     private void initListeners() {
 
         
@@ -129,6 +134,8 @@ public class TimelineControl extends VBox {
         
         
     }
+
+
 
     class Delta {
 
@@ -177,7 +184,7 @@ public class TimelineControl extends VBox {
         timebar.setPrefWidth(timebar.getPrefWidth()/magnification.doubleValue());
         timeslider.setTranslateX(timeslider.getTranslateX()/magnification.doubleValue());
         magnification.set(1);
-        duration.setValue(60);
+        duration.setValue(CinematicEditorManager.getInstance().getCurrentClip().getDuration());
         durationInput.setText(duration.getValue().toString());
         Integer majorTickUnit = new Integer((int) (zoom.getMax()));
                     System.out.println("Major Tick Unit : " + majorTickUnit);

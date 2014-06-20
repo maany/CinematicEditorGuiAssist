@@ -4,13 +4,16 @@
  */
 package com.jme3.gde.cinematic.core;
 
+import java.util.List;
+
 /**
  *
  * @author MAYANK
  */
 public class CinematicClip{
     
-    private int duration=30;
+    private double duration=30;
+    private List<DurationChangeListener> durationChangeListeners;
     private String name;
     private Layer root;
     
@@ -29,6 +32,10 @@ public class CinematicClip{
         this.root = root;
         this.duration = duration;
     }
+    private void notifyDurationChangeListeners(){
+        for(DurationChangeListener listener:durationChangeListeners)
+            listener.durationChanged();
+    }
     public Layer getRoot() {
         return root;
     }
@@ -45,12 +52,22 @@ public class CinematicClip{
         this.name = name;
     }
     
-    public int getDuration() {
+    public double getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(double duration) {
         this.duration = duration;
+        notifyDurationChangeListeners();
+        
+    }
+
+    public List<DurationChangeListener> getDurationChangeListeners() {
+        return durationChangeListeners;
+    }
+
+    public void setDurationChangeListeners(List<DurationChangeListener> durationChangeListeners) {
+        this.durationChangeListeners = durationChangeListeners;
     }
     
 }

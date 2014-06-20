@@ -203,9 +203,9 @@ public class ATopComponent extends javax.swing.JFrame {
     }
 
     private void initTimeline() {
-        int durationValue = cinematicClip.getDuration();
+        double durationValue = cinematicClip.getDuration();
         DefaultTableModel model = (DefaultTableModel) timeline.getModel();
-        model.setColumnCount(durationValue);
+        model.setColumnCount((int) durationValue);
         int cols = model.getColumnCount();
         System.out.println("ColumnCount during initTimeline : " + cols);
         TableColumnModel columnModel = timeline.getColumnModel();
