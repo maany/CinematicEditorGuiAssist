@@ -18,7 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -128,7 +128,15 @@ public class TimelineControl extends VBox implements DurationChangeListener{
                     /*
                      * Resize and update X positions of all the eventControls
                      */
-                    
+                    for(Node strip:timelineScrollPaneVBox.getChildren())
+                    {
+                        EventStrip eventStrip = (EventStrip) strip;
+                        for(Node control: eventStrip.getChildren())
+                        {
+                            EventControl eventControl = (EventControl) control;
+                            eventControl.refactorDisplay(mag.doubleValue());
+                        }
+                    }
                 }
             }
         });
@@ -314,7 +322,8 @@ public class TimelineControl extends VBox implements DurationChangeListener{
             System.out.println("Event "+ event.getName()
                     + "Start Pos : " + event.getStartPoint()
                     + "duration : " + event.getDuration());
-            eventControl.render();
+            eventControl.render(magnification.doubleValue());
+            eventControl.refactorDisplay(magnification.doubleValue());
         }
         System.out.println("Adding eventStrip in Timeline for " + layer.getName());
         timelineScrollPaneVBox.getChildren().add(index, eventStrip);
@@ -346,6 +355,14 @@ public class TimelineControl extends VBox implements DurationChangeListener{
 
     public void setTimelineScrollPaneVBox(VBox timelineScrollPaneVBox) {
         this.timelineScrollPaneVBox = timelineScrollPaneVBox;
+    }
+
+    public DoubleProperty getMagnification() {
+        return magnification;
+    }
+
+    public void setMagnification(DoubleProperty magnification) {
+        this.magnification = magnification;
     }
     
     

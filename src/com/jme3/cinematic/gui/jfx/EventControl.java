@@ -18,7 +18,8 @@ import javafx.scene.control.Button;
  */
 public class EventControl extends Button implements DurationChangeListener{
     private Event event;
-    
+    private double refWidth;
+    private double refStartX;
     private double magnification=1;
     public EventControl(Event event) {
         super(event.getName());
@@ -32,17 +33,18 @@ public class EventControl extends Button implements DurationChangeListener{
         
     }
     /**
-     * Renders the event in the appropriate position in the Eventstrip. It takes into account the magnification 
-     * and duration of clip.
+     * Renders the event in the default position in the Eventstrip. It takes into account the magnification 
+     * and duration of clip and produces a control whose dimensions act as a reference for changes that occur 
+     * due to magnification of modification of duration.
      */
-    public void render() {
+    public void render(double magnification) {
         double clipDuration = CinematicEditorManager.getInstance().getCurrentClip().getDuration();
         EventStrip eventStrip = (EventStrip)getParent();
-        double editorWidth = eventStrip.getTimeline().getPrefWidth();
-        double width = event.getDuration()*editorWidth/clipDuration;
-        double startX = event.getStartPoint()*editorWidth/clipDuration;
-        setPrefWidth(width);
-        setTranslateX(startX);
+        double editorRefWidth = eventStrip.getTimeline().getPrefWidth()/magnification;
+        refWidth = event.getDuration()*editorRefWidth/clipDuration;
+        refStartX = event.getStartPoint()*editorRefWidth/clipDuration;
+        setPrefWidth(refWidth);
+        setTranslateX(refStartX);
         
     }
     /**
@@ -50,7 +52,9 @@ public class EventControl extends Button implements DurationChangeListener{
      */
      @Override
     public void durationChanged() {
-        render();
+         EventStrip eventStrip = (EventStrip) getParent();
+        double mag = eventStrip.getTimeline().getMagnification().doubleValue();
+         render(mag);
     }
 
     /**
@@ -58,12 +62,12 @@ public class EventControl extends Button implements DurationChangeListener{
      * This method refactors the startPoint and width to keep the event in sync with the timebar
      * @param magnification 
      */
-     @Deprecated
+     
     public void refactorDisplay(double magnification){
-        double clipDuration = CinematicEditorManager.getInstance().getCurrentClip().getDuration();
+        //double clipDuration = CinematicEditorManager.getInstance().getCurrentClip().getDuration();
         this.magnification = magnification;
-        double width = magnification*getPrefWidth();
-        double startPoint = magnification*event.getStartPoint()/clipDuration;
+        double width = magnification*refWidth;
+        double startPoint = magnification*refStartX;
         setPrefWidth(width);
         setTranslateX(startPoint);
     }
