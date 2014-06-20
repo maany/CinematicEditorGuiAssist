@@ -65,7 +65,9 @@ public class TimelineControl extends VBox implements DurationChangeListener{
     private DoubleProperty frameWidth = new SimpleDoubleProperty();
     private double endAdjustment = 8; // timebar extra width due to circular thumb of slider
     private double startAdjustment = 6.5;
-
+/**
+ * Constructor to load the TimelineControl from fxml file. Initialization operations are performed by {@link #initTimeline() }
+ */
     public TimelineControl() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("timeline_ui_control.fxml"));
         loader.setRoot(this);
@@ -75,22 +77,24 @@ public class TimelineControl extends VBox implements DurationChangeListener{
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        initView();
-        //initListeners();
+        
     }
 
     public void initTimeline() {
-        initView();
         initListeners();
+        initView();
         initActions();
     }
+    /**
+     * durationInput changes CinematicClip's duration, which changes TimelineControl's duration
+     */
     @Override
     public void durationChanged() {
         duration.setValue(CinematicEditorManager.getInstance().getCurrentClip().getDuration());
     }
     private void initListeners() {
 
-        
+        CinematicEditorManager.getInstance().getCurrentClip().getDurationChangeListeners().add(this);
         timelineScrollPane.hvalueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
@@ -184,8 +188,10 @@ public class TimelineControl extends VBox implements DurationChangeListener{
         timebar.setPrefWidth(timebar.getPrefWidth()/magnification.doubleValue());
         timeslider.setTranslateX(timeslider.getTranslateX()/magnification.doubleValue());
         magnification.set(1);
+        
         duration.setValue(CinematicEditorManager.getInstance().getCurrentClip().getDuration());
         durationInput.setText(duration.getValue().toString());
+        timebar.setMax(duration.doubleValue());
         Integer majorTickUnit = new Integer((int) (zoom.getMax()));
                     System.out.println("Major Tick Unit : " + majorTickUnit);
                 timebar.setMajorTickUnit(majorTickUnit);
@@ -252,7 +258,10 @@ public class TimelineControl extends VBox implements DurationChangeListener{
             public void handle(ActionEvent t) {
                 try {
                     
-                    duration.set(new Double(durationInput.getText()));
+                    CinematicEditorManager.getInstance().getCurrentClip().setDuration(new Double(durationInput.getText()));
+                    /*
+                     * DurationChangeListener will change the value of duration (DoubleProperty) of this TimelineControl
+                     */
                     System.out.println("duration : " + duration.getValue());
                     timebar.setMax(duration.get());
                     

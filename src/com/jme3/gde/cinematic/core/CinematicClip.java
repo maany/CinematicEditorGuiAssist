@@ -4,6 +4,7 @@
  */
 package com.jme3.gde.cinematic.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 public class CinematicClip{
     
     private double duration=30;
-    private List<DurationChangeListener> durationChangeListeners;
+    private List<DurationChangeListener> durationChangeListeners = new ArrayList<>();
     private String name;
     private Layer root;
     
