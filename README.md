@@ -5,7 +5,7 @@ The main project repo is here : https://github.com/maany/jME-CinematicEditor
 Here's how the editor looks like currently. More toolbars will be added soon.
 
 
-![cinematic editor gui](http://imgur.com/6PXVsc8.png)
+![cinematic editor gui](http://i.imgur.com/dQhhG6C.png)
 
 ###To test the editor
 * Clone this repo
