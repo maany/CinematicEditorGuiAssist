@@ -3,7 +3,7 @@
 This repository contains the source for the GUI of the cinematic editor being developed for jMonkeyEngine as partof GSoC 14. 
 The main project repo is here : https://github.com/maany/jME-CinematicEditor
 Here's how the editor looks like currently. More toolbars will be added soon.
-![cinematic editor gui]http://imgur.com/6PXVsc8
+![cinematic editor gui](http://imgur.com/6PXVsc8.png)
 
 ###To test the editor
 * Clone this repo
