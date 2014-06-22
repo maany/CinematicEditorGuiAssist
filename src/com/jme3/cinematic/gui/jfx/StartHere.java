@@ -39,52 +39,28 @@ public class StartHere extends Application{
         stage.show();
         initRoot();
         cinematicEditor.initCinematicEditorUI();
+        cinematicEditor.getLayerContainer().setCinematicEditor(cinematicEditor);
         cinematicEditor.initView(root);
         
     }
+    /**
+     * Initialize the content of Cinematic Editor
+     */
     public void initRoot() {
         CinematicClip clip = new CinematicClip("MyClip");
+        clip.setDuration(30);
         CinematicEditorManager.getInstance().setCurrentClip(clip);
-        CinematicEditorManager.getInstance().getCurrentClip().setDuration(30);
-        root = new Layer("MyClip-root",null);
+        root = new Layer("Root",null);
         clip.setRoot(root);
+        
         Layer child = new Layer("Child",root);
-        //for(int i=1;i<=10;i++){
-        //    child = new Layer("Child" + i,root);
-         //}
-        root.getLaf().setCollapsed(false);
-        child.getLaf().setCollapsed(false);
         Layer sibling = new Layer("Sibling",root);
         Layer grandChild = new Layer("GrandChild",child);
         Layer grandChildCousin = new Layer("GrandChildCousin",sibling);
-        Event childEvent = new Event();
-        childEvent.setName("Child-E");
-        childEvent.setDuration(5);
-        childEvent.setLayer(child);
-        childEvent.setStartPoint(5);
-        child.getEvents().add(childEvent);
         
-        Event sibEvent = new Event("sibEv", sibling, 21, 8);
+        Event event = new Event("E1", child, 5, 5);
+        Event eventA = new Event("E2", sibling, 17, 7);
         
-        
-      /*  System.out.println("Root : " + root.getLaf().isCollapsed());
-        System.out.println("Child : " + child.getLaf().isCollapsed());
-        System.out.println("Sibling : " + sibling.getLaf().isCollapsed());
-        System.out.println("GC : " + grandChild.getLaf().isCollapsed());
-        System.out.println("GCC : " + grandChildCousin.getLaf().isCollapsed());
-        sibling.getLaf().setCollapsed(false);
-       List<Layer> visibleDescendants = sibling.findAllVisibleDescendants();
-        System.out.println("Visible Descendants :" + visibleDescendants.size());
-        for(Layer visible:visibleDescendants) 
-        System.out.println("VisibleList : " + visible.getName());
-        System.out.println("AGAIN : " + sibling.findAllVisibleDescendants());
-        System.out.println("AGAIN : " + sibling.findAllVisibleDescendants());
-        */
-       /* List<Layer> descendants = root.getDescendants();
-        System.out.println("Descendants : "+ descendants.size());
-        for(Layer descendant:descendants)
-            System.out.println("Descendant : " + descendant.getName()); 
-            * */
     }
     public void launchTimeline(Stage stage){
         timeline = new TimelineControl();

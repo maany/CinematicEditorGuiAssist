@@ -111,13 +111,18 @@ public class CinematicEditorUI extends AnchorPane{
      * @param layer 
      */
     public void addNewLayer(Layer layer){
-        Layer parent = layer.getParent();
+        Layer parent = null;
+        
+        parent = layer.getParent();
+            System.out.println("PARENT : " + parent.getName());
+        
         if(!parent.getLaf().isCollapsed()) {
             int index = getIndex(parent);
             index+= parent.getVisibleDescendants().size();
             index++;
             addLayerView(index, layer);
         }
+        
     }
     /**
      * deletes the layer and removes layer view + descendant layer view.
