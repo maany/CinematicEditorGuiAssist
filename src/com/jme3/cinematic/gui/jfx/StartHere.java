@@ -27,13 +27,13 @@ public class StartHere extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         launchCinematicEditor(stage);
-        //launchTimeline(stage);
+       // launchTimeline(stage);
         //launchLayerContainer(stage);
         
     }
     public void launchCinematicEditor(Stage stage) {
         cinematicEditor = new CinematicEditorUI();
-        scene = new Scene(cinematicEditor,660,220);
+        scene = new Scene(cinematicEditor,880,220);
         scene.getStylesheets().add(getClass().getResource("layer_container.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
@@ -64,7 +64,7 @@ public class StartHere extends Application{
     }
     public void launchTimeline(Stage stage){
         timeline = new TimelineControl();
-        scene = new Scene(timeline,440,220);
+        scene = new Scene(timeline,660,220);
         
         stage.setScene(scene);
         stage.show();

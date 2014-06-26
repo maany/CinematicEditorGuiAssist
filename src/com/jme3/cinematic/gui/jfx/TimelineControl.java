@@ -287,7 +287,7 @@ public class TimelineControl extends VBox implements DurationChangeListener {
 
     public final void initView() {
         resetView();
-        Rectangle timebarClip = new Rectangle(0, 0, 440, 190);
+        Rectangle timebarClip = new Rectangle(0, 0, 660, 190);
         //timebarTimeSliderStackPane.getChildren().add(timebarClip);
         timebarTimeSliderStackPane.setClip(timebarClip);
         //timebarTimesliderSuperGroup
