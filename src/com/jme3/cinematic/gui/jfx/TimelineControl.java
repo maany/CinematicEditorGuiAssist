@@ -79,6 +79,7 @@ public class TimelineControl extends VBox implements DurationChangeListener {
      */
     public TimelineControl() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("timeline_ui_control.fxml"));
+        loader.setClassLoader(this.getClass().getClassLoader());
         loader.setRoot(this);
         loader.setController(this);
         try {
