@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jme3.cinematic.gui.jfx;
+package com.jme3.gde.cinematic.gui.jfx;
 
 
 
@@ -114,13 +114,21 @@ public class CinematicEditorUI extends AnchorPane{
         Layer parent = null;
         
         parent = layer.getParent();
-            System.out.println("PARENT : " + parent.getName());
+            System.out.println("PARENT : " + parent.getName() + parent.getChildren().isEmpty());
         
-        if(!parent.getLaf().isCollapsed()) {
+        if(!parent.getLaf().isCollapsed())  {
             int index = getIndex(parent);
             index+= parent.getVisibleDescendants().size();
             index++;
             addLayerView(index, layer);
+        } else if(parent.getChildren().size()==1){
+            
+            System.out.println("Parent is empty. ");
+            int index = getIndex(parent);
+            System.out.println("Parent's index : " + index);
+            index++;
+            parent.getLaf().setCollapsed(false);
+            addLayerView(index,layer);
         }
         
     }
