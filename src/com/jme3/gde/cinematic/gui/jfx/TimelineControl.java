@@ -105,6 +105,7 @@ public class TimelineControl extends VBox implements DurationChangeListener {
         duration.setValue(CinematicEditorManager.getInstance().getCurrentClip().getDuration());
         double timesliderPos = currentTime.doubleValue() * timebar.getPrefWidth() / duration.doubleValue();
         timeslider.setLayoutX(startAdjustment + timesliderPos - 3);
+        System.out.println("*** RENDERING FROM TIMELINE");
     }
 
     private void initListeners() {
@@ -329,6 +330,7 @@ public class TimelineControl extends VBox implements DurationChangeListener {
                             durationInput.setText(duration.getValue().toString());
                         } catch (Exception ex) {
                             System.out.println("invalid duration entered in durationInput");
+                            ex.printStackTrace();
                             durationInput.setText(duration.getValue().toString());
                         } finally {
                             durationInput.setGraphic(tempGraphic);

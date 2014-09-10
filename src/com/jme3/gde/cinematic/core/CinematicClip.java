@@ -5,8 +5,11 @@
 package com.jme3.gde.cinematic.core;
 
 import com.jme3.gde.cinematic.gui.GuiManager;
+import com.jme3.gde.cinematic.gui.jfx.TimelineControl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,9 +37,16 @@ public class CinematicClip{
         this.root = root;
         this.duration = duration;
     }
-    private void notifyDurationChangeListeners(){
-        for(DurationChangeListener listener:durationChangeListeners)
+    /**
+     * The code in @{link TimelineControl
+     */
+    private void notifyDurationChangeListeners() {
+        
+        for (DurationChangeListener listener : durationChangeListeners) {
             listener.durationChanged();
+            
+        }
+        
     }
     public Layer getRoot() {
         return root;

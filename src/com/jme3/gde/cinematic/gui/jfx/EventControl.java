@@ -44,11 +44,12 @@ public class EventControl extends Button implements DurationChangeListener{
     public void render(double magnification) {
         double clipDuration = CinematicEditorManager.getInstance().getCurrentClip().getDuration();
         EventStrip eventStrip = (EventStrip)getParent();
-        double editorRefWidth = eventStrip.getTimeline().getPrefWidth()/magnification;
+        double editorRefWidth = eventStrip.getTimeline().getPrefWidth();
         refWidth = event.getDuration()*editorRefWidth/clipDuration;
         refStartX = event.getStartPoint()*editorRefWidth/clipDuration;
         setPrefWidth(refWidth);
         setTranslateX(refStartX);
+        System.out.println("DURATION VALUE USED IN EVENT : " + clipDuration);
         
     }
     /**
@@ -57,8 +58,9 @@ public class EventControl extends Button implements DurationChangeListener{
      @Override
     public void durationChanged() {
          EventStrip eventStrip = (EventStrip) getParent();
-        double mag = eventStrip.getTimeline().getMagnification().doubleValue();
+         double mag = eventStrip.getTimeline().getMagnification().doubleValue();
          render(mag);
+         System.out.println("*** Rendering Event Control : " + getEvent().getName());
     }
 
     /**

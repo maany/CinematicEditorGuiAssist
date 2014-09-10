@@ -206,6 +206,17 @@ public class LayerContainerControl extends AnchorPane{
                 cinematicEditor.getTimeline().addEvent(event, layer);
             }
         });
+        initListeners();
+    }
+    private void initListeners(){
+        
+        layerContainer.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+
+            @Override
+            public void changed(ObservableValue ov, Object t, Object t1) {
+                System.out.println("Selected Layer : " + ((Layer)t1).getName());
+            }
+        });
     }
     private void initTestRoot() {
         CinematicClip clip = new CinematicClip("MyClip");
